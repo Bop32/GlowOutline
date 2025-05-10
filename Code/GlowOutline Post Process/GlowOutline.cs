@@ -65,7 +65,7 @@ public sealed class GlowOutline : PostProcess
 		renderAttributes = new RenderAttributes();
 		sceneObjects = [];
 		objectsToRender.CollectionChanged += HandleCollectionChangedEvent;
-		maskMaterial = Material.FromShader( "shaders/GlowMask.shader" );
+		maskMaterial = Material.FromShader( "shaders/Mask.shader" );
 	}
 
 	private void RenderOutlineEffect( SceneCamera sceneCamera )
@@ -93,7 +93,6 @@ public sealed class GlowOutline : PostProcess
 		//Sets SceneTexture in the Composite shader.
 		using RenderTarget cameraRT = Graphics.GrabFrameTexture( "SceneTexture" );
 
-		//renderAttributes.Clear();
 		renderAttributes.Set( "BlurredTexture", blurredTexture );
 		renderAttributes.Set( "SilhouetteTexture", maskRT );
 		renderAttributes.Set( "GlowIntensity", glowIntensity );

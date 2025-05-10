@@ -1,4 +1,4 @@
-﻿// Ideally you wouldn't need half these includes for an unlit shader
+// Ideally you wouldn't need half these includes for an unlit shader
 // But it's stupiod
 
 FEATURES
@@ -9,7 +9,7 @@ FEATURES
 MODES
 {
     Forward();
-    // Depth();
+    Depth();
 }
 
 COMMON
@@ -34,7 +34,7 @@ VS
 	PixelInput MainVs( VertexInput i )
 	{
 		PixelInput o = ProcessVertex( i );
-        
+		// Add your vertex manipulation functions here
 		return FinalizeVertex( o );
 	}
 }
@@ -43,14 +43,11 @@ PS
 {
     #include "common/pixel.hlsl"
 
-    float4 color < Attribute("GlowColor"); >;
+	float4 color < Attribute("GlowColor"); >;
 
-	RenderState(DepthEnable, false);
-	RenderState(DepthWriteEnable, true);
-
-    float4 MainPs(PixelInput i) : SV_Target0
-    {
-        /*
+	float4 MainPs( PixelInput i ) : SV_Target0
+	{
+		 /*
         float depthVal = Depth::Get(i.vPositionSs.xy - g_vViewportOffset);
         depthVal = RemapValClamped(depthVal, g_flViewportMinZ, g_flViewportMaxZ, 0.0, 1.0);
 
@@ -78,7 +75,9 @@ PS
         */
 
         // Above code is only needed if you want to render glow in certain cases like when the object is only behind a wall or only when visible.
-        // I am pretty positive we need to use stencils instead of depth but can't figure out a way to do it without it being all hacky and a mess.
-        return float4(SrgbGammaToLinear(color.rgb), color.a);
-    }
+        // I am quite sure we need to use stencils to make it work properly in all cases however, I can't figure out how to use stencils properly
+        // With RenderTargets without doing some hacky things.
+
+		return float4(SrgbGammaToLinear(color.rgb), color.a);
+	}
 }

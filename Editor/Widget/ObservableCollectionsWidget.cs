@@ -12,7 +12,7 @@ public class ObservableCollectionWidget : ControlObjectWidget
 	private Layout content;
 
 	//TODO: Implemenet removing elements.
-	public ObservableCollectionWidget( SerializedProperty property ) : base( property )
+	public ObservableCollectionWidget( SerializedProperty property ) : base( property, false )
 	{
 		Layout = Layout.Row();
 		Layout.Spacing = 2;

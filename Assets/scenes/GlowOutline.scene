@@ -3,10 +3,18 @@
   "GameObjects": [
     {
       "__guid": "af8e097b-4579-4db4-9a49-fc5012bce5f4",
+      "__version": 1,
       "Flags": 0,
       "Name": "Scene Information",
       "Position": "0,-672,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SceneInformation",
@@ -30,17 +38,34 @@
     },
     {
       "__guid": "f737f5e7-1e85-4eb9-b13f-6857fb454da7",
+      "__version": 1,
       "Flags": 0,
       "Name": "Camera Holder",
       "Position": "-34.69996,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [],
       "Children": [
         {
           "__guid": "3ee1c9f4-07be-4e0b-8b23-67bee2d8ec8a",
+          "__version": 1,
           "Flags": 0,
           "Name": "Camera",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.CameraComponent",
@@ -133,30 +158,58 @@
                 {
                   "GameObject": {
                     "_type": "gameobject",
-                    "go": "1c847147-38dd-425b-8fdc-1a0dacaeb73f"
+                    "go": "d4496338-b3ce-4ad5-9b7b-71edc4fd5c90"
                   },
                   "Color": "0,0,0,0"
                 },
                 {
                   "GameObject": {
                     "_type": "gameobject",
-                    "go": "d4496338-b3ce-4ad5-9b7b-71edc4fd5c90"
-                  },
-                  "Color": "0.96279,0.12091,0.49976,1"
-                },
-                {
-                  "GameObject": {
-                    "_type": "gameobject",
                     "go": "d93f436f-dada-4772-be9e-788a558d167a"
                   },
-                  "Color": "0.82326,0.31399,0.68745,1"
+                  "Color": "0.24991,0.34894,0.70698,1"
                 },
                 {
                   "GameObject": {
                     "_type": "gameobject",
                     "go": "604a92dc-1a53-43c3-a33b-8d4c88213c98"
                   },
-                  "Color": "0.12558,1,0.94171,1"
+                  "Color": "0.71351,0.85581,0.19903,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "1c847147-38dd-425b-8fdc-1a0dacaeb73f"
+                  },
+                  "Color": "0.29627,0.76744,0.5083,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "72914f54-a166-4764-9ea5-f33f151440a1"
+                  },
+                  "Color": "0.89302,0.06646,0.06646,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "9a50ed09-ac8f-4609-a200-761f07ee1b56"
+                  },
+                  "Color": "0.7814,0.19989,0.62633,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "e612a9ed-04ed-4afb-b40d-ee2279ebb255"
+                  },
+                  "Color": "0.32398,0.67873,0.72558,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "c4dbd39e-eefb-4b57-8d7a-eb674e7c5b8e"
+                  },
+                  "Color": "0.9907,0.45856,0.21196,1"
                 }
               ],
               "OnComponentDestroy": null,
@@ -173,11 +226,18 @@
     },
     {
       "__guid": "bfc59c12-1ed2-4f91-8956-a95a315eac3c",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sun",
+      "Position": "0,0,0",
       "Rotation": "-0.0729315,0.4822396,0.1305433,0.8631827",
+      "Scale": "1,1,1",
       "Tags": "light_directional,light",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.DirectionalLight",
@@ -199,10 +259,18 @@
     },
     {
       "__guid": "00344a8c-fa5e-45ae-b12a-10bb781a1dc3",
+      "__version": 1,
       "Flags": 0,
       "Name": "2D Skybox",
+      "Position": "0,0,0",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
       "Tags": "skybox",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.SkyBox2D",
@@ -250,12 +318,18 @@
     },
     {
       "__guid": "91c332cc-82a4-4af7-a267-052a7e0eebf7",
+      "__version": 1,
       "Flags": 0,
       "Name": "Wall",
       "Position": "-0.7750664,2.181282,52.13782",
       "Rotation": "0,0,0.5,0.8660254",
       "Scale": "1,35.64686,50",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -279,80 +353,41 @@
           },
           "RenderType": "Off",
           "Tint": "0.12093,0.11924,0.11924,1"
-        },
-        {
-          "__type": "SpawnObjects",
-          "__guid": "44f8a064-4e16-40fa-84d7-324afddfe919",
-          "__enabled": false,
-          "glowOutline": {
-            "_type": "component",
-            "component_id": "936877a8-fcce-4903-a2cf-1224a50cd2a4",
-            "go": "3ee1c9f4-07be-4e0b-8b23-67bee2d8ec8a",
-            "component_type": "GlowOutline"
-          },
-          "objects": [
-            {
-              "_type": "gameobject",
-              "go": "d93f436f-dada-4772-be9e-788a558d167a"
-            },
-            {
-              "_type": "gameobject",
-              "go": "3e2c5772-43e4-4a48-a475-20fa0e7c6152"
-            },
-            {
-              "_type": "gameobject",
-              "go": "11a3a928-c092-4d61-b58f-904fa446d8c6"
-            },
-            {
-              "_type": "gameobject",
-              "go": "1c847147-38dd-425b-8fdc-1a0dacaeb73f"
-            },
-            {
-              "_type": "gameobject",
-              "go": "72914f54-a166-4764-9ea5-f33f151440a1"
-            },
-            {
-              "_type": "gameobject",
-              "go": "d4496338-b3ce-4ad5-9b7b-71edc4fd5c90"
-            },
-            {
-              "_type": "gameobject",
-              "go": "e612a9ed-04ed-4afb-b40d-ee2279ebb255"
-            },
-            {
-              "_type": "gameobject",
-              "go": "604a92dc-1a53-43c3-a33b-8d4c88213c98"
-            }
-          ],
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "sphere": {
-            "_type": "gameobject",
-            "go": "c14c133e-c075-4fb7-a627-f2e2ca5f02c4"
-          }
         }
       ],
       "Children": []
     },
     {
       "__guid": "38bad44c-2271-46d6-9c81-db2324332e43",
+      "__version": 1,
       "Flags": 0,
       "Name": "Stuff to glow",
       "Position": "104.9347,-88.28188,9.761097",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [],
       "Children": []
     },
     {
       "__guid": "c14c133e-c075-4fb7-a627-f2e2ca5f02c4",
+      "__version": 1,
       "Flags": 0,
       "Name": "Sphere",
       "Position": "160,448,9.00457",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [
         {
           "__type": "Sandbox.ModelRenderer",
@@ -376,42 +411,40 @@
           },
           "RenderType": "On",
           "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "MoveCamera",
-          "__guid": "b7230463-8d83-4560-bb9a-c054bc99d7a3",
-          "__enabled": false,
-          "camera": {
-            "_type": "gameobject",
-            "go": "f737f5e7-1e85-4eb9-b13f-6857fb454da7"
-          },
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "radius": 90.09991
         }
       ],
       "Children": []
     },
     {
       "__guid": "b2a06b5e-a71f-4662-bc89-9ef432c4e5e2",
+      "__version": 1,
       "Flags": 0,
       "Name": "Objects",
       "Position": "83.82693,85.38651,99.33183",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
       "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
       "Components": [],
       "Children": [
         {
           "__guid": "9a50ed09-ac8f-4609-a200-761f07ee1b56",
+          "__version": 1,
           "Flags": 0,
           "Name": "w_m4a1",
           "Position": "-4.630966,-74.07281,-16.19338",
           "Rotation": "-0.1913417,-0.4619398,-0.3314136,0.8001032",
+          "Scale": "1,1,1",
           "Tags": "glowoutline",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.ModelRenderer",
@@ -441,12 +474,18 @@
         },
         {
           "__guid": "c4dbd39e-eefb-4b57-8d7a-eb674e7c5b8e",
+          "__version": 1,
           "Flags": 0,
           "Name": "v_m700",
           "Position": "42.28811,-86.07593,-61.27104",
           "Rotation": "0.157559,0.5880183,-0.2053349,0.7663205",
+          "Scale": "1,1,1",
           "Tags": "glowoutline",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.SkinnedModelRenderer",
@@ -483,7 +522,8 @@
               "RenderType": "On",
               "Sequence": {
                 "Name": null,
-                "Looping": true
+                "Looping": true,
+                "Blending": false
               },
               "Tint": "1,1,1,1",
               "UseAnimGraph": true
@@ -493,11 +533,18 @@
         },
         {
           "__guid": "d4496338-b3ce-4ad5-9b7b-71edc4fd5c90",
+          "__version": 1,
           "Flags": 0,
           "Name": "bike_frame",
           "Position": "-83.82693,10.61349,-3.331833",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
           "Tags": "glowoutline",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.Prop",
@@ -523,12 +570,18 @@
         },
         {
           "__guid": "72914f54-a166-4764-9ea5-f33f151440a1",
+          "__version": 1,
           "Flags": 0,
           "Name": "w_portalgun",
           "Position": "38.85511,-91.28723,2.244949",
           "Rotation": "-0.6035534,0.07945934,0.1035534,0.7865663",
+          "Scale": "1,1,1",
           "Tags": "glowoutline",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.Prop",
@@ -554,6 +607,7 @@
         },
         {
           "__guid": "e612a9ed-04ed-4afb-b40d-ee2279ebb255",
+          "__version": 1,
           "Flags": 0,
           "Name": "beer_bottle",
           "Position": "-16.22064,-27.58381,-99.29785",
@@ -561,6 +615,10 @@
           "Scale": "4.432121,4.432121,4.432121",
           "Tags": "glowoutline",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.Prop",
@@ -586,11 +644,18 @@
         },
         {
           "__guid": "11a3a928-c092-4d61-b58f-904fa446d8c6",
+          "__version": 1,
           "Flags": 0,
           "Name": "couch",
           "Position": "-47.35849,-693.3865,-45.29059",
           "Rotation": "0,-0.3826834,0,0.9238796",
+          "Scale": "1,1,1",
+          "Tags": "",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.Prop",
@@ -616,12 +681,18 @@
         },
         {
           "__guid": "1c847147-38dd-425b-8fdc-1a0dacaeb73f",
+          "__version": 1,
           "Flags": 0,
           "Name": "weapon_crate_stacka",
           "Position": "12.17307,-85.38651,-35.33183",
+          "Rotation": "0,0,0,1",
           "Scale": "0.4771789,0.4771789,0.4771789",
           "Tags": "glowoutline",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.Prop",
@@ -647,11 +718,18 @@
         },
         {
           "__guid": "1afd4e94-4ca7-42eb-9528-419bbdb666b4",
+          "__version": 1,
           "Flags": 0,
           "Name": "Cube",
           "Position": "-2.437981,-693.3865,-99.33183",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
           "Tags": "glowoutline",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.ModelRenderer",
@@ -681,12 +759,18 @@
         },
         {
           "__guid": "3e2c5772-43e4-4a48-a475-20fa0e7c6152",
+          "__version": 1,
           "Flags": 0,
           "Name": "Cube (1)",
           "Position": "-75.0822,13.19878,-78.24934",
           "Rotation": "0.3744167,0.3266408,0.5179825,0.6962846",
+          "Scale": "1,1,1",
           "Tags": "glowoutline",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.ModelRenderer",
@@ -716,11 +800,18 @@
         },
         {
           "__guid": "d93f436f-dada-4772-be9e-788a558d167a",
+          "__version": 1,
           "Flags": 0,
           "Name": "male_07_reference",
           "Position": "-147.8269,-117.3865,-99.31808",
           "Rotation": "0,0,0.6087614,0.7933534",
+          "Scale": "1,1,1",
+          "Tags": "",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.Prop",
@@ -746,11 +837,18 @@
         },
         {
           "__guid": "604a92dc-1a53-43c3-a33b-8d4c88213c98",
+          "__version": 1,
           "Flags": 0,
           "Name": "gordon_freeman",
           "Position": "-198.9654,-92.81212,-99.19978",
           "Rotation": "0,0,0.5,0.8660254",
+          "Scale": "1,1,1",
+          "Tags": "",
           "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkInterpolation": true,
+          "NetworkOrphaned": 0,
+          "OwnerTransfer": 1,
           "Components": [
             {
               "__type": "Sandbox.Prop",
@@ -797,7 +895,7 @@
       "IncludedBodies": ""
     }
   },
-  "ResourceVersion": 2,
+  "ResourceVersion": 3,
   "Title": "Shader Test",
   "Description": null,
   "__references": [
@@ -811,5 +909,5 @@
     "wujekfoliarz.gordon_freeman#32128",
     "yfi.male_07_model#36962"
   ],
-  "__version": 2
+  "__version": 3
 }
