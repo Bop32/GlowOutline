@@ -1,5 +1,7 @@
 My attempt to re-create the glow outline effect you see in the Left 4 Dead games.
 
+> If you are on staging branch you might see compilation erros for the shaders, if seen just recompile the shaders it tells you to in console then restart the editor and it should work
+
 If you don't have it you can download the library in the S&Box Editor by clicking on the "Library Manager" tab and clicking "sbox.game" and typing glow outline and look for one by bopcomapny or just the files from here and drag it into your scene.
 
 In order to use it drag the script onto the camera. You should see something similar to the image below.
