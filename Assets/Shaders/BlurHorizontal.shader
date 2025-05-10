@@ -75,3 +75,4 @@ PS
 		return float4( gSum );
 	}
 }
+

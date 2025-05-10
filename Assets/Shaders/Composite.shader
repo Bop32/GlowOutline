@@ -9,7 +9,7 @@ FEATURES
 MODES
 {
     Forward();
-    Depth( S_MODE_DEPTH);
+    Depth();
 }
 
 COMMON
@@ -74,3 +74,4 @@ PS
         return float4(finalColor, 1.0);
     }
 }
+
