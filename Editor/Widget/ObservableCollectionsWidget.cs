@@ -51,9 +51,9 @@ public class ObservableCollectionWidget : ControlObjectWidget
 	private void CreateButton( Layout column )
 	{
 		Layout buttonRow = Layout.Row();
-		buttonRow.Margin = new Sandbox.UI.Margin( ControlRowHeight + 2, 0, 0, 0 );
+		buttonRow.Margin = new Sandbox.UI.Margin( Theme.RowHeight + 2, 0, 0, 0 );
 
-		addElementButton = new ObservableCollectionsWidgetButton( "add", "Element to add", ControlRowHeight )
+		addElementButton = new ObservableCollectionsWidgetButton( "add", "Element to add", Theme.RowHeight )
 		{
 			MouseClick = AddElement,
 		};
