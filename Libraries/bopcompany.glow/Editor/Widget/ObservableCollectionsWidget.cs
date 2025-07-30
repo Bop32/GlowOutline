@@ -11,7 +11,6 @@ public class ObservableCollectionWidget : ControlObjectWidget
 	private SerializedCollection collection;
 	private Layout content;
 
-	//TODO: Implemenet removing elements.
 	public ObservableCollectionWidget( SerializedProperty property ) : base( property, false )
 	{
 		Layout = Layout.Row();
@@ -51,9 +50,9 @@ public class ObservableCollectionWidget : ControlObjectWidget
 	private void CreateButton( Layout column )
 	{
 		Layout buttonRow = Layout.Row();
-		buttonRow.Margin = new Sandbox.UI.Margin( Theme.RowHeight + 2, 0, 0, 0 );
+		buttonRow.Margin = new Sandbox.UI.Margin( Theme.ControlHeight + 2, 0, 0, 0 );
 
-		addElementButton = new ObservableCollectionsWidgetButton( "add", "Element to add", Theme.RowHeight )
+		addElementButton = new ObservableCollectionsWidgetButton( "add", "Element to add", Theme.ControlHeight )
 		{
 			MouseClick = AddElement,
 		};

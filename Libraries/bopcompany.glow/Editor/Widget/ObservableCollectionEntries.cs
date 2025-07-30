@@ -22,7 +22,7 @@ public class ObservableCollectionEntries : Widget
 		control.Enabled = Enabled;
 
 		ObservableCollectionsWidgetButton removeButton = new ObservableCollectionsWidgetButton( "clear", "Remove",
-			Theme.RowHeight, () => RemoveAt( index ) );
+			Theme.ControlHeight, () => RemoveAt( index ) );
 
 		Layout.Add( control );
 		Layout.Add( removeButton );

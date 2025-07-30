@@ -19,6 +19,7 @@
         {
           "__type": "Sandbox.SceneInformation",
           "__guid": "8b4d472b-74c9-41e4-90aa-2d5bdef82bcc",
+          "__enabled": true,
           "Author": null,
           "Changes": "",
           "Description": "",
@@ -70,6 +71,7 @@
             {
               "__type": "Sandbox.CameraComponent",
               "__guid": "cf3cbf96-22b6-4be4-a5d0-672a96c17f9f",
+              "__enabled": true,
               "BackgroundColor": "0,0,0,1",
               "ClearFlags": "All",
               "FieldOfView": 90,
@@ -94,6 +96,7 @@
             {
               "__type": "Sandbox.Bloom",
               "__guid": "d73ef723-c888-41d4-802e-f797c79318be",
+              "__enabled": true,
               "__version": 1,
               "Gamma": 2.2,
               "Mode": "Additive",
@@ -110,6 +113,7 @@
             {
               "__type": "Sandbox.Tonemapping",
               "__guid": "9d76f362-7227-40eb-a189-69353c780c46",
+              "__enabled": true,
               "__version": 3,
               "AutoExposureEnabled": true,
               "ExposureCompensation": 1,
@@ -128,6 +132,7 @@
             {
               "__type": "Sandbox.Sharpen",
               "__guid": "0bffee5e-19f2-41c4-88f9-faefbcce6bf4",
+              "__enabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -139,6 +144,7 @@
             {
               "__type": "MoveCameraWithKeyboard",
               "__guid": "1a4a79be-1d2e-4105-88a8-8598f36c236e",
+              "__enabled": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -148,68 +154,49 @@
             },
             {
               "__type": "GlowOutline",
-              "__guid": "0e0b682d-f0c5-4b99-8d7b-485f9e0fba56",
-              "downsampleMethod": "Box",
+              "__guid": "4fd5f8ff-97f3-4771-a5c2-f2949fa72b55",
+              "__enabled": true,
+              "DownsampleMethod": "GaussianBlur",
               "glowColor": "0.1,0.32,0.79,1",
-              "glowIntensity": 15,
-              "glowSize": 2,
-              "iterativeBlurCount": 2,
+              "glowIntensity": 0.5,
+              "glowSize": 1.5,
               "objectsToRender": [
                 {
                   "GameObject": {
                     "_type": "gameobject",
-                    "go": "d4496338-b3ce-4ad5-9b7b-71edc4fd5c90"
+                    "go": "1afd4e94-4ca7-42eb-9528-419bbdb666b4"
                   },
-                  "Color": "0,0,0,0"
+                  "Renderer": null,
+                  "Color": "1,1,1,1"
+                }
+              ],
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "AddGlow",
+              "__guid": "e5f81c0e-a940-445b-a8aa-454e266cda8e",
+              "__enabled": true,
+              "center": {
+                "_type": "gameobject",
+                "go": "c14c133e-c075-4fb7-a627-f2e2ca5f02c4"
+              },
+              "objectsToGlow": [
+                {
+                  "_type": "gameobject",
+                  "go": "d93f436f-dada-4772-be9e-788a558d167a"
                 },
                 {
-                  "GameObject": {
-                    "_type": "gameobject",
-                    "go": "d93f436f-dada-4772-be9e-788a558d167a"
-                  },
-                  "Color": "0.24991,0.34894,0.70698,1"
+                  "_type": "gameobject",
+                  "go": "604a92dc-1a53-43c3-a33b-8d4c88213c98"
                 },
                 {
-                  "GameObject": {
-                    "_type": "gameobject",
-                    "go": "604a92dc-1a53-43c3-a33b-8d4c88213c98"
-                  },
-                  "Color": "0.71351,0.85581,0.19903,1"
-                },
-                {
-                  "GameObject": {
-                    "_type": "gameobject",
-                    "go": "1c847147-38dd-425b-8fdc-1a0dacaeb73f"
-                  },
-                  "Color": "0.29627,0.76744,0.5083,1"
-                },
-                {
-                  "GameObject": {
-                    "_type": "gameobject",
-                    "go": "72914f54-a166-4764-9ea5-f33f151440a1"
-                  },
-                  "Color": "0.89302,0.06646,0.06646,1"
-                },
-                {
-                  "GameObject": {
-                    "_type": "gameobject",
-                    "go": "9a50ed09-ac8f-4609-a200-761f07ee1b56"
-                  },
-                  "Color": "0.7814,0.19989,0.62633,1"
-                },
-                {
-                  "GameObject": {
-                    "_type": "gameobject",
-                    "go": "e612a9ed-04ed-4afb-b40d-ee2279ebb255"
-                  },
-                  "Color": "0.32398,0.67873,0.72558,1"
-                },
-                {
-                  "GameObject": {
-                    "_type": "gameobject",
-                    "go": "c4dbd39e-eefb-4b57-8d7a-eb674e7c5b8e"
-                  },
-                  "Color": "0.9907,0.45856,0.21196,1"
+                  "_type": "gameobject",
+                  "go": "11a3a928-c092-4d61-b58f-904fa446d8c6"
                 }
               ],
               "OnComponentDestroy": null,
@@ -242,6 +229,7 @@
         {
           "__type": "Sandbox.DirectionalLight",
           "__guid": "d3659344-a90d-48fa-927a-095f70fe041f",
+          "__enabled": true,
           "FogMode": "Enabled",
           "FogStrength": 1,
           "LightColor": "0.94419,0.97767,1,1",
@@ -289,6 +277,7 @@
         {
           "__type": "Sandbox.EnvmapProbe",
           "__guid": "f3e304db-baab-4c1a-a4ec-8442585c2d62",
+          "__enabled": true,
           "Bounds": {
             "Mins": "-512,-512,-512",
             "Maxs": "512,512,512"
@@ -334,10 +323,12 @@
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "226a3b3e-4902-41e0-a39a-74b2137aea07",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
           "MaterialOverride": null,
+          "Materials": null,
           "Model": "models/dev/box.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -392,10 +383,12 @@
         {
           "__type": "Sandbox.ModelRenderer",
           "__guid": "56141252-9aed-4b49-ab97-d2273135d0d7",
+          "__enabled": true,
           "BodyGroups": 18446744073709551615,
           "CreateAttachments": false,
           "MaterialGroup": null,
           "MaterialOverride": null,
+          "Materials": null,
           "Model": "models/dev/sphere.vmdl",
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -449,10 +442,12 @@
             {
               "__type": "Sandbox.ModelRenderer",
               "__guid": "f4354902-3f56-42d1-bae9-6a41c6365889",
+              "__enabled": true,
               "BodyGroups": 171,
               "CreateAttachments": false,
               "MaterialGroup": null,
               "MaterialOverride": null,
+              "Materials": null,
               "Model": "models/weapons/sbox_assault_m4a1/w_m4a1.vmdl",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -490,6 +485,7 @@
             {
               "__type": "Sandbox.SkinnedModelRenderer",
               "__guid": "19e302a7-953a-4211-989d-028fed382f0c",
+              "__enabled": true,
               "AnimationGraph": null,
               "BodyGroups": 1299,
               "BoneMergeTarget": null,
@@ -497,6 +493,7 @@
               "CreateBoneObjects": false,
               "MaterialGroup": null,
               "MaterialOverride": null,
+              "Materials": null,
               "Model": "models/weapons/sbox_sniper_m700/v_m700.vmdl",
               "Morphs": {},
               "OnComponentDestroy": null,
@@ -549,6 +546,7 @@
             {
               "__type": "Sandbox.Prop",
               "__guid": "76dfae67-4edc-4c3c-8f33-1bd0d69e4a12",
+              "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "Health": 0,
               "IsStatic": true,
@@ -586,6 +584,7 @@
             {
               "__type": "Sandbox.Prop",
               "__guid": "40200950-2909-44cf-a416-1044917524ec",
+              "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "Health": 0,
               "IsStatic": true,
@@ -623,6 +622,7 @@
             {
               "__type": "Sandbox.Prop",
               "__guid": "564806b1-b076-49f2-b4ad-53ed7f5e65d2",
+              "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "Health": 1,
               "IsStatic": true,
@@ -660,6 +660,7 @@
             {
               "__type": "Sandbox.Prop",
               "__guid": "dfd92ef0-21f5-43e5-a6b9-2f3f5d6a5ad3",
+              "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "Health": 5,
               "IsStatic": true,
@@ -697,6 +698,7 @@
             {
               "__type": "Sandbox.Prop",
               "__guid": "1644bbeb-4b9b-4c4e-968c-670307824cbc",
+              "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "Health": 0,
               "IsStatic": true,
@@ -734,10 +736,12 @@
             {
               "__type": "Sandbox.ModelRenderer",
               "__guid": "f8e3ae9b-be05-491d-90ab-b6f1965bed9b",
+              "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
               "MaterialGroup": null,
               "MaterialOverride": null,
+              "Materials": null,
               "Model": "models/dev/box.vmdl",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -775,10 +779,12 @@
             {
               "__type": "Sandbox.ModelRenderer",
               "__guid": "2b225778-85ae-4ab9-a760-ea74d0b81d5b",
+              "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
               "MaterialGroup": null,
               "MaterialOverride": null,
+              "Materials": null,
               "Model": "models/dev/error.vmdl",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -816,6 +822,7 @@
             {
               "__type": "Sandbox.Prop",
               "__guid": "0f1eb6bb-c9e9-4cdd-8e5d-6c63baa73062",
+              "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "Health": 0,
               "IsStatic": true,
@@ -853,6 +860,7 @@
             {
               "__type": "Sandbox.Prop",
               "__guid": "0bf1c45f-e1fe-4ee1-b357-fe232a4949c9",
+              "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "Health": 0,
               "IsStatic": true,
