@@ -4,7 +4,7 @@ using Sandbox.Rendering;
 [Icon( "Accessibility_New" )]
 public sealed class GlowOutline : PostProcess
 {
-	public enum DownSampleMethods
+	public enum DownSampleMethods : byte
 	{
 		Box = 0,
 		GaussianBlur = 1,
@@ -246,6 +246,7 @@ public sealed class GlowOutline : PostProcess
 	protected override void OnDisabled()
 	{
 		Instance = null;
+		CommandList.Reset();
 	}
 }
 

@@ -158,45 +158,72 @@
               "__enabled": true,
               "DownsampleMethod": "GaussianBlur",
               "glowColor": "0.1,0.32,0.79,1",
-              "glowIntensity": 0.5,
+              "glowIntensity": 0.75,
               "glowSize": 1.5,
               "objectsToRender": [
                 {
                   "GameObject": {
                     "_type": "gameobject",
-                    "go": "1afd4e94-4ca7-42eb-9528-419bbdb666b4"
+                    "go": "604a92dc-1a53-43c3-a33b-8d4c88213c98"
                   },
                   "Renderer": null,
-                  "Color": "1,1,1,1"
-                }
-              ],
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null
-            },
-            {
-              "__type": "AddGlow",
-              "__guid": "e5f81c0e-a940-445b-a8aa-454e266cda8e",
-              "__enabled": true,
-              "center": {
-                "_type": "gameobject",
-                "go": "c14c133e-c075-4fb7-a627-f2e2ca5f02c4"
-              },
-              "objectsToGlow": [
-                {
-                  "_type": "gameobject",
-                  "go": "d93f436f-dada-4772-be9e-788a558d167a"
+                  "Color": "0.29214,0.33809,0.9814,1"
                 },
                 {
-                  "_type": "gameobject",
-                  "go": "604a92dc-1a53-43c3-a33b-8d4c88213c98"
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "d93f436f-dada-4772-be9e-788a558d167a"
+                  },
+                  "Renderer": null,
+                  "Color": "0.89302,0.08307,0.56904,1"
                 },
                 {
-                  "_type": "gameobject",
-                  "go": "11a3a928-c092-4d61-b58f-904fa446d8c6"
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "d4496338-b3ce-4ad5-9b7b-71edc4fd5c90"
+                  },
+                  "Renderer": null,
+                  "Color": "1,0,0,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "1c847147-38dd-425b-8fdc-1a0dacaeb73f"
+                  },
+                  "Renderer": null,
+                  "Color": "0.52753,0.99535,0.39814,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "9a50ed09-ac8f-4609-a200-761f07ee1b56"
+                  },
+                  "Renderer": null,
+                  "Color": "0.49302,0.74651,1,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "72914f54-a166-4764-9ea5-f33f151440a1"
+                  },
+                  "Renderer": null,
+                  "Color": "0.35377,0.00372,0.4,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "c4dbd39e-eefb-4b57-8d7a-eb674e7c5b8e"
+                  },
+                  "Renderer": null,
+                  "Color": "0.95138,0.9907,0.40089,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "e612a9ed-04ed-4afb-b40d-ee2279ebb255"
+                  },
+                  "Renderer": null,
+                  "Color": "1,0.70395,0.06512,1"
                 }
               ],
               "OnComponentDestroy": null,
@@ -370,7 +397,7 @@
       "__version": 1,
       "Flags": 0,
       "Name": "Sphere",
-      "Position": "160,448,9.00457",
+      "Position": "558.2015,511.3571,9.00457",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
       "Tags": "",
@@ -429,8 +456,8 @@
           "__version": 1,
           "Flags": 0,
           "Name": "w_m4a1",
-          "Position": "-4.630966,-74.07281,-16.19338",
-          "Rotation": "-0.1913417,-0.4619398,-0.3314136,0.8001032",
+          "Position": "-22.90855,-97.49385,-18.29324",
+          "Rotation": "0.02226002,-0.5319757,-0.2005621,0.8223631",
           "Scale": "1,1,1",
           "Tags": "glowoutline",
           "Enabled": true,
@@ -722,7 +749,7 @@
           "__guid": "1afd4e94-4ca7-42eb-9528-419bbdb666b4",
           "__version": 1,
           "Flags": 0,
-          "Name": "Cube",
+          "Name": "Cube123123",
           "Position": "-2.437981,-693.3865,-99.33183",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
@@ -881,6 +908,23 @@
           "Children": []
         }
       ]
+    },
+    {
+      "__guid": "de697640-ba5f-4787-8c71-895c99d60440",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Spawned Objects",
+      "Position": "-65.76042,-708.6223,-35.4138",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [],
+      "Children": []
     }
   ],
   "SceneProperties": {
