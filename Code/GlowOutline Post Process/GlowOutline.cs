@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Sandbox;
 using Sandbox.Rendering;
 
 [Icon( "Accessibility_New" )]
@@ -15,10 +17,10 @@ public sealed class GlowOutline : PostProcess
 	[Property, Feature( "Glow Settings" ), Title( "Default Color" )]
 	private Color glowColor = new( 0.10f, 0.32f, 0.79f, 1.00f );
 
-	[Property, Range( 0.5f, 4.0f, 0.5f ), Description( "How big you want to the glow to be." ), Feature( "Glow Settings" )]
+	[Property, Range( 0.5f, 4.0f ), Step( 0.5f ), Description( "How big you want to the glow to be." ), Feature( "Glow Settings" )]
 	private readonly float glowSize = 1.5f;
 
-	[Property, Range( 0.25f, 1, 0.25f ), Description( "How bright you want the glow to be." ), Feature( "Glow Settings" )]
+	[Property, Range( 0.25f, 1 ), Step( 0.25f ), Description( "How bright you want the glow to be." ), Feature( "Glow Settings" )]
 	private readonly float glowIntensity = 0.75f;
 
 	[Header( "Glow Rendering" )]
