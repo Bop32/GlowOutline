@@ -15,7 +15,7 @@ public sealed class GlowOutline : PostProcess
 	}
 
 	[Property, Feature( "Glow Settings" ), Title( "Default Color" )]
-	private Color glowColor = new( 0.10f, 0.32f, 0.79f, 1.00f );
+	private Color defaultGlowColor = new( 0.10f, 0.32f, 0.79f, 1.00f );
 
 	[Property, Range( 0.5f, 4.0f ), Step( 0.5f ), Description( "How big you want to the glow to be." ), Feature( "Glow Settings" )]
 	private readonly float glowSize = 1.5f;
@@ -29,17 +29,21 @@ public sealed class GlowOutline : PostProcess
 	private DownSampleMethods DownsampleMethod { get; set; } = DownSampleMethods.GaussianBlur;
 
 	[Property, Title( "Objects" ), Feature( "Objects to Glow" ), InlineEditor( Label = false )]
-	private readonly List<GlowSettings> objectsToRender = null;
+	private List<GlowSettings> objectsToGlow = null;
 
 	private const string TmpTexture = "TmpTexture";
+
 	private const string MaskRT = "MaskRT";
+
 	private const string MaskRTCopy = "MaskRTCopy";
 
 	private Material maskMaterial;
-	protected override Stage RenderStage => Stage.AfterTransparent;
-	protected override int RenderOrder => 100; // Don't think this matters but idk
+
 	RendererSetup maskRenderSetup = default;
 	public static GlowOutline Instance { get; private set; }
+	public int GlowCount => objectsToGlow.Count;
+	protected override Stage RenderStage => Stage.AfterTransparent;
+	protected override int RenderOrder => 100; // Don't think this matters but idk
 
 	protected override void OnAwake()
 	{
@@ -57,6 +61,8 @@ public sealed class GlowOutline : PostProcess
 			Color = null
 		};
 
+		if ( objectsToGlow == null ) objectsToGlow = new();
+
 		SetTransparentColorToDefault();
 		Instance = this;
 	}
@@ -68,7 +74,7 @@ public sealed class GlowOutline : PostProcess
 
 	private void RenderOutlineEffect()
 	{
-		if ( objectsToRender == null || objectsToRender.Count <= 0 ) return;
+		if ( objectsToGlow.Count <= 0 ) return;
 
 		RenderTargetHandle maskRT = CreateMaskRenderTarget( MaskRT );
 
@@ -155,9 +161,9 @@ public sealed class GlowOutline : PostProcess
 			CommandList.SetRenderTarget( maskRT );
 			CommandList.Clear( Color.Transparent, true, true, true );
 
-			for ( int i = 0; i < objectsToRender.Count; i++ )
+			for ( int i = 0; i < objectsToGlow.Count; i++ )
 			{
-				GlowSettings glowObject = objectsToRender[i];
+				GlowSettings glowObject = objectsToGlow[i];
 				CommandList.Attributes.Set( "GlowColor", glowObject.Color );
 
 				if ( glowObject.GameObject == null ) continue;
@@ -165,7 +171,7 @@ public sealed class GlowOutline : PostProcess
 				if ( glowObject.Renderer == null )
 				{
 					glowObject.SetRenderer( glowObject.GameObject.GetComponent<ModelRenderer>() );
-					objectsToRender[i] = glowObject;
+					objectsToGlow[i] = glowObject;
 				}
 
 				CommandList.DrawRenderer( glowObject.Renderer, maskRenderSetup );
@@ -184,66 +190,140 @@ public sealed class GlowOutline : PostProcess
 
 	private void SetTransparentColorToDefault()
 	{
-		for ( int i = 0; i < objectsToRender.Count; i++ )
+		for ( int i = 0; i < objectsToGlow.Count; i++ )
 		{
-			if ( objectsToRender[i].Color == Color.Transparent )
+			if ( objectsToGlow[i].Color == Color.Transparent )
 			{
-				GlowSettings glowSettings = objectsToRender[i];
-				glowSettings.Color = glowColor;
-				objectsToRender[i] = glowSettings;
+				GlowSettings glowSettings = objectsToGlow[i];
+				glowSettings.SetColor( defaultGlowColor );
+				objectsToGlow[i] = glowSettings;
 			}
 		}
 	}
 
-	private Graphics.DownsampleMethod GetDownSampleMethod()
-	{
-		return (Graphics.DownsampleMethod)DownsampleMethod;
-	}
+	/// <summary>
+	/// Changes the glow color of a specific GameObject.
+	/// </summary>
 
-	public void ChangeColor( GameObject item, Color color )
+	public void SetGlowColor( GameObject item, Color color )
 	{
-		for ( int i = 0; i < objectsToRender.Count; i++ )
+		for ( int i = 0; i < objectsToGlow.Count; i++ )
 		{
-			if ( objectsToRender[i].GameObject != item ) continue;
+			if ( objectsToGlow[i].GameObject != item ) continue;
 
-			GlowSettings glowSettings = objectsToRender[i];
-			glowSettings.Color = color;
-			objectsToRender[i] = glowSettings;
+			GlowSettings glowSettings = objectsToGlow[i];
+			glowSettings.SetColor( color );
+			objectsToGlow[i] = glowSettings;
 			break;
 		}
 	}
 
+	/// <summary>
+	/// Returns the GlowSettings for a specific GameObject if it exists.
+	/// </summary>
+
+	public GlowSettings GetGlowObject( GameObject item )
+	{
+		for ( int i = 0; i < objectsToGlow.Count; i++ )
+		{
+			if ( objectsToGlow[i].GameObject == item ) return objectsToGlow[i];
+		}
+
+		return new GlowSettings( null, null, null );
+	}
+
+	public List<GlowSettings> GlowingObjects()
+	{
+		return objectsToGlow;
+	}
+
+	/// <summary>
+	/// Adds a GameObject with the default glow color.
+	/// </summary>
 	public void Add( GameObject item )
 	{
-		Add( item, glowColor );
+		Add( item, defaultGlowColor );
 	}
 
+	/// <summary>
+	/// Tries to add a GameObject with a specific glow color. 
+	/// Returns false if the GameObject is already present.
+	/// </summary>
+	public bool TryAdd( GameObject item, Color color )
+	{
+		bool itemExists = Contains( item );
+
+		if ( itemExists ) return false;
+
+		Add( item, color );
+
+		return true;
+	}
+
+	/// <summary>
+	/// Tries to add a GameObject with the default glow color. 
+	/// Returns false if the GameObject is already present.
+	/// </summary>
+	public bool TryAdd( GameObject item )
+	{
+		return TryAdd( item, defaultGlowColor );
+	}
+
+	/// <summary>
+	/// Adds a GameObject with the specified glow color and associated ModelRenderer.
+	/// </summary>
 	public void Add( GameObject item, Color color )
 	{
-		objectsToRender.Add( new GlowSettings( item, color, item.GetComponent<ModelRenderer>() ) );
+		objectsToGlow.Add( new GlowSettings( item, color, item.GetComponent<ModelRenderer>() ) );
 	}
 
+	/// <summary>
+	/// Checks if the specified GameObject is already in the list.
+	/// </summary>
+	public bool Contains( GameObject item )
+	{
+		for ( int i = 0; i < objectsToGlow.Count; i++ )
+		{
+			if ( objectsToGlow[i].GameObject == item ) return true;
+		}
+
+		return false;
+	}
+
+	/// <summary>
+	/// Removes the specified GameObject from the list, if it exists.
+	/// </summary>
 	public void Remove( GameObject item )
 	{
-		for ( int i = 0; i < objectsToRender.Count; i++ )
+		for ( int i = 0; i < objectsToGlow.Count; i++ )
 		{
-			if ( objectsToRender[i].GameObject != item ) continue;
+			if ( objectsToGlow[i].GameObject != item ) continue;
 
 			RemoveAt( i );
 			break;
 		}
 	}
 
+	/// <summary>
+	/// Removes the GameObject at the specified index.
+	/// </summary>
 	public void RemoveAt( int index )
 	{
-		objectsToRender.RemoveAt( index );
+		objectsToGlow.RemoveAt( index );
 	}
 
+	/// <summary>
+	/// Clears all GameObjects from the list.
+	/// </summary>
 	public void Clear()
 	{
-		objectsToRender.Clear();
+		objectsToGlow.Clear();
 	}
 
+	private Graphics.DownsampleMethod GetDownSampleMethod()
+	{
+		return (Graphics.DownsampleMethod)DownsampleMethod;
+	}
 
 	protected override void OnDisabled()
 	{
@@ -255,12 +335,12 @@ public sealed class GlowOutline : PostProcess
 //WARNING: If you add / remove any fields from this struct, it will remove all objects in the list.
 public struct GlowSettings
 {
-	public GameObject GameObject { get; set; }
+	public GameObject GameObject { get; private set; }
 	[Hide]
-	public Renderer Renderer { get; set; }
+	public Renderer Renderer { get; private set; }
 
 	[Description( "If kept transparent (#00000000) it will set it to default color automatically" )]
-	public Color Color { get; set; } = Color.White;
+	public Color Color { get; private set; } = Color.White;
 
 	public GlowSettings()
 	{
@@ -279,8 +359,30 @@ public struct GlowSettings
 		Renderer = renderer;
 	}
 
+	/// <summary>
+	/// Sets the renderer. Since this is a struct, changes won't stay unless you re-assign it.
+	/// Example:
+	/// <code>
+	/// GlowSettings copy = glowingObjects[i];
+	/// copy.SetRenderer(GameObject.GetComponent(ModelRenderer));
+	/// glowingObjects[i] = copy;
+	/// </code>
+	/// </summary>
 	public void SetRenderer( Renderer renderer )
 	{
 		Renderer = renderer;
+	}
+	/// <summary>
+	/// Sets the color. Since this is a struct, changes won't stay unless you re-assign it.
+	/// Example:
+	/// <code>
+	/// GlowSettings copy = glowingObjects[i];
+	/// copy.SetColor(Color.Blue);
+	/// glowingObjects[i] = copy;
+	/// </code>
+	/// </summary>
+	public void SetColor( Color color )
+	{
+		Color = color;
 	}
 }
