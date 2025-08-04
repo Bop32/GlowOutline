@@ -335,12 +335,12 @@ public sealed class GlowOutline : PostProcess
 //WARNING: If you add / remove any fields from this struct, it will remove all objects in the list.
 public struct GlowSettings
 {
-	public GameObject GameObject { get; private set; }
+	public GameObject GameObject { get; set; }
 	[Hide]
-	public Renderer Renderer { get; private set; }
+	public Renderer Renderer { get; set; }
 
 	[Description( "If kept transparent (#00000000) it will set it to default color automatically" )]
-	public Color Color { get; private set; } = Color.White;
+	public Color Color { get; set; } = Color.White;
 
 	public GlowSettings()
 	{
