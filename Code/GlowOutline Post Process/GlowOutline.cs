@@ -29,7 +29,7 @@ public sealed class GlowOutline : PostProcess
 	private DownSampleMethods DownsampleMethod { get; set; } = DownSampleMethods.GaussianBlur;
 
 	[Property, Title( "Objects" ), Feature( "Objects to Glow" ), InlineEditor( Label = false )]
-	private List<GlowSettings> objectsToGlow = null;
+	private List<GlowObject> objectsToGlow = null;
 
 	private const string TmpTexture = "TmpTexture";
 
@@ -64,7 +64,16 @@ public sealed class GlowOutline : PostProcess
 		if ( objectsToGlow == null ) objectsToGlow = new();
 
 		SetTransparentColorToDefault();
-		Instance = this;
+
+		if ( Instance != null )
+		{
+			Log.Error( "GlowOutline: Only one instance of GlowOutline is supported. " +
+				"If you want to use multiple GlowOutline components you will need to get call `GetComponent<GlowOutline>()` manually." );
+		}
+		else
+		{
+			Instance = this;
+		}
 	}
 
 	protected override void UpdateCommandList()
@@ -163,7 +172,7 @@ public sealed class GlowOutline : PostProcess
 
 			for ( int i = 0; i < objectsToGlow.Count; i++ )
 			{
-				GlowSettings glowObject = objectsToGlow[i];
+				GlowObject glowObject = objectsToGlow[i];
 				CommandList.Attributes.Set( "GlowColor", glowObject.Color );
 
 				if ( glowObject.GameObject == null ) continue;
@@ -194,9 +203,9 @@ public sealed class GlowOutline : PostProcess
 		{
 			if ( objectsToGlow[i].Color == Color.Transparent )
 			{
-				GlowSettings glowSettings = objectsToGlow[i];
-				glowSettings.SetColor( defaultGlowColor );
-				objectsToGlow[i] = glowSettings;
+				GlowObject glowObject = objectsToGlow[i];
+				glowObject.SetColor( defaultGlowColor );
+				objectsToGlow[i] = glowObject;
 			}
 		}
 	}
@@ -211,28 +220,28 @@ public sealed class GlowOutline : PostProcess
 		{
 			if ( objectsToGlow[i].GameObject != item ) continue;
 
-			GlowSettings glowSettings = objectsToGlow[i];
-			glowSettings.SetColor( color );
-			objectsToGlow[i] = glowSettings;
+			GlowObject glowObject = objectsToGlow[i];
+			glowObject.SetColor( color );
+			objectsToGlow[i] = glowObject;
 			break;
 		}
 	}
 
 	/// <summary>
-	/// Returns the GlowSettings for a specific GameObject if it exists.
+	/// Returns the GlowObject for a specific GameObject if it exists.
 	/// </summary>
 
-	public GlowSettings GetGlowObject( GameObject item )
+	public GlowObject GetGlowObject( GameObject item )
 	{
 		for ( int i = 0; i < objectsToGlow.Count; i++ )
 		{
 			if ( objectsToGlow[i].GameObject == item ) return objectsToGlow[i];
 		}
 
-		return new GlowSettings( null, null, null );
+		return new GlowObject( null, null, null );
 	}
 
-	public List<GlowSettings> GlowingObjects()
+	public List<GlowObject> GlowingObjects()
 	{
 		return objectsToGlow;
 	}
@@ -274,7 +283,7 @@ public sealed class GlowOutline : PostProcess
 	/// </summary>
 	public void Add( GameObject item, Color color )
 	{
-		objectsToGlow.Add( new GlowSettings( item, color, item.GetComponent<ModelRenderer>() ) );
+		objectsToGlow.Add( new GlowObject( item, color, item.GetComponent<ModelRenderer>() ) );
 	}
 
 	/// <summary>
@@ -333,7 +342,7 @@ public sealed class GlowOutline : PostProcess
 }
 
 //WARNING: If you add / remove any fields from this struct, it will remove all objects in the list.
-public struct GlowSettings
+public struct GlowObject
 {
 	public GameObject GameObject { get; set; }
 	[Hide]
@@ -342,17 +351,17 @@ public struct GlowSettings
 	[Description( "If kept transparent (#00000000) it will set it to default color automatically" )]
 	public Color Color { get; set; } = Color.White;
 
-	public GlowSettings()
+	public GlowObject()
 	{
 
 	}
 
-	public GlowSettings( Color color )
+	public GlowObject( Color color )
 	{
 		Color = color;
 	}
 
-	public GlowSettings( GameObject gameObject, Color color, Renderer renderer )
+	public GlowObject( GameObject gameObject, Color color, Renderer renderer )
 	{
 		Color = color;
 		GameObject = gameObject;
@@ -363,7 +372,7 @@ public struct GlowSettings
 	/// Sets the renderer. Since this is a struct, changes won't stay unless you re-assign it.
 	/// Example:
 	/// <code>
-	/// GlowSettings copy = glowingObjects[i];
+	/// GlowObject copy = glowingObjects[i];
 	/// copy.SetRenderer(GameObject.GetComponent(ModelRenderer));
 	/// glowingObjects[i] = copy;
 	/// </code>
@@ -376,7 +385,7 @@ public struct GlowSettings
 	/// Sets the color. Since this is a struct, changes won't stay unless you re-assign it.
 	/// Example:
 	/// <code>
-	/// GlowSettings copy = glowingObjects[i];
+	/// GlowObject copy = glowingObjects[i];
 	/// copy.SetColor(Color.Blue);
 	/// glowingObjects[i] = copy;
 	/// </code>
