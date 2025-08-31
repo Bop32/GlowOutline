@@ -154,22 +154,14 @@
             },
             {
               "__type": "GlowOutline",
-              "__guid": "70629244-082d-4005-8a17-05b4562f112a",
+              "__guid": "2eeb788c-270d-4d2e-9afc-18347ae54bf8",
               "__enabled": true,
+              "autoFindGlowables": false,
               "defaultGlowColor": "0.1,0.32,0.79,1",
-              "DownsampleMethod": "Box",
+              "DownsampleMethod": "GaussianBlur",
               "glowIntensity": 0.75,
-              "glowSize": 4,
-              "objectsToGlow": [
-                {
-                  "GameObject": {
-                    "_type": "gameobject",
-                    "go": "aec47106-2d43-4941-8d46-19165f937f8a"
-                  },
-                  "Renderer": null,
-                  "Color": "1,1,1,1"
-                }
-              ],
+              "glowSize": 2,
+              "objectsToGlow": [],
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -212,6 +204,20 @@
           "OnComponentUpdate": null,
           "Shadows": true,
           "SkyColor": "0.2532,0.32006,0.35349,1"
+        },
+        {
+          "__type": "AddGlow",
+          "__guid": "2131c9cf-09fe-4cb2-8332-635af1f015d5",
+          "__enabled": true,
+          "center": null,
+          "objectsToGlow": [],
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "parent": null
         }
       ],
       "Children": []
@@ -340,7 +346,7 @@
       "__guid": "c14c133e-c075-4fb7-a627-f2e2ca5f02c4",
       "__version": 1,
       "Flags": 0,
-      "Name": "Sphere",
+      "Name": "Center",
       "Position": "476.2501,369.4131,9.00457",
       "Rotation": "0,0,-0.258819,0.9659258",
       "Scale": "1,1,1",
@@ -434,6 +440,19 @@
               },
               "RenderType": "On",
               "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Glowable",
+              "__guid": "4092f033-8023-40ca-801f-c2ffafdb9d02",
+              "__enabled": true,
+              "AddOnStart": true,
+              "GlowColor": "1,0.5,0,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
             }
           ],
           "Children": []
@@ -495,6 +514,19 @@
               },
               "Tint": "1,1,1,1",
               "UseAnimGraph": true
+            },
+            {
+              "__type": "Glowable",
+              "__guid": "f158c33c-c484-49bf-87dc-591563e56a43",
+              "__enabled": true,
+              "AddOnStart": true,
+              "GlowColor": "0,1,0.06667,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
             }
           ],
           "Children": []
@@ -535,8 +567,21 @@
               "Tint": "1,1,1,1"
             },
             {
+              "__type": "Glowable",
+              "__guid": "77573be0-28d6-4e13-9446-3188383dfccb",
+              "__enabled": true,
+              "AddOnStart": true,
+              "GlowColor": "1,0.76876,0.26977,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "cde9e31b-1f64-40bc-91fc-955d6f9380c0",
+              "__guid": "bf50ed9e-e2ab-4b73-ac66-2a7bf7929ebc",
               "__enabled": true,
               "AnimationGraph": null,
               "BodyGroups": 18446744073709551615,
@@ -579,7 +624,7 @@
             },
             {
               "__type": "Sandbox.ModelCollider",
-              "__guid": "321a6738-6482-4897-92bc-310291844885",
+              "__guid": "da983344-e89d-444e-9a1a-7c3a43600780",
               "__enabled": true,
               "Elasticity": null,
               "Friction": null,
@@ -639,8 +684,21 @@
               "Tint": "1,1,1,1"
             },
             {
+              "__type": "Glowable",
+              "__guid": "0f34d0d8-14c1-4980-8f13-bc40e6d5e0c5",
+              "__enabled": true,
+              "AddOnStart": true,
+              "GlowColor": "0.69163,0.52558,1,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
               "__type": "Sandbox.ModelRenderer",
-              "__guid": "65644b53-634e-4abb-b9ea-aa9050ddca96",
+              "__guid": "71d28a1d-b5fa-416b-ba17-04d2f1933618",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
@@ -665,7 +723,7 @@
             },
             {
               "__type": "Sandbox.ModelCollider",
-              "__guid": "1da2b2bc-ca9c-48de-9320-078e1f0be91d",
+              "__guid": "5cc697ba-33c8-44a2-8d44-0828e64a9898",
               "__enabled": true,
               "Elasticity": null,
               "Friction": null,
@@ -725,8 +783,21 @@
               "Tint": "1,1,1,1"
             },
             {
+              "__type": "Glowable",
+              "__guid": "ebaf60aa-3e01-49ec-837a-8c1fe7e3265d",
+              "__enabled": true,
+              "AddOnStart": true,
+              "GlowColor": "0.02297,0.13691,0.54884,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
               "__type": "Sandbox.ModelRenderer",
-              "__guid": "2f92a88e-cd4b-4d1b-a7a5-61e8a2f613fb",
+              "__guid": "75ebf891-046d-4178-8e5f-b17aedd4f6cb",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
@@ -751,7 +822,7 @@
             },
             {
               "__type": "Sandbox.ModelCollider",
-              "__guid": "d0582e0a-a0db-4ad0-b73c-053b9cf078e5",
+              "__guid": "18cbae54-1ba6-440b-955b-361dc444b947",
               "__enabled": true,
               "Elasticity": null,
               "Friction": null,
@@ -812,7 +883,7 @@
             },
             {
               "__type": "Sandbox.ModelRenderer",
-              "__guid": "1b94d397-ec0d-4dd4-a8f4-cb415da7de8a",
+              "__guid": "0be3c3ad-d76d-4326-b2cb-cfe60682f498",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
@@ -837,7 +908,7 @@
             },
             {
               "__type": "Sandbox.ModelCollider",
-              "__guid": "fc5797c5-e88f-4573-8ae4-826ce0a0520e",
+              "__guid": "4c04a4e6-df99-4c99-a202-5030dc91ea1a",
               "__enabled": true,
               "Elasticity": null,
               "Friction": null,
@@ -897,8 +968,21 @@
               "Tint": "1,1,1,1"
             },
             {
+              "__type": "Glowable",
+              "__guid": "19946251-0514-4f40-ba3a-0210d5f745a8",
+              "__enabled": true,
+              "AddOnStart": true,
+              "GlowColor": "0.05581,1,0.66954,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
               "__type": "Sandbox.ModelRenderer",
-              "__guid": "fb446e72-39cf-4b6a-9bfb-22f1a568e4c7",
+              "__guid": "2b342dd0-9abd-42c0-a204-15e15fbd0006",
               "__enabled": true,
               "BodyGroups": 18446744073709551615,
               "CreateAttachments": false,
@@ -923,7 +1007,7 @@
             },
             {
               "__type": "Sandbox.ModelCollider",
-              "__guid": "15bb02a6-d8c9-41d9-b2e8-13bbc74a3981",
+              "__guid": "2ede3971-4255-4f71-a2a3-2ef3547924f5",
               "__enabled": true,
               "Elasticity": null,
               "Friction": null,
@@ -1069,8 +1153,21 @@
               "Tint": "1,1,1,1"
             },
             {
+              "__type": "Glowable",
+              "__guid": "a78f106f-54d7-4c14-9488-ef1c1bda56bc",
+              "__enabled": true,
+              "AddOnStart": true,
+              "GlowColor": "0,0.40465,0.67442,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "825daeb3-7575-49fa-a840-7741d6a62547",
+              "__guid": "57140eec-3f4c-4231-8e81-a651b7420a71",
               "__enabled": true,
               "AnimationGraph": null,
               "BodyGroups": 18446744073709551615,
@@ -1113,7 +1210,7 @@
             },
             {
               "__type": "Sandbox.ModelCollider",
-              "__guid": "76a80cc7-a395-421d-bcee-9acc73e3d0e0",
+              "__guid": "1f5a1b89-7d35-49bc-b586-3b7e9e52df00",
               "__enabled": true,
               "Elasticity": null,
               "Friction": null,
@@ -1173,8 +1270,21 @@
               "Tint": "1,1,1,1"
             },
             {
+              "__type": "Glowable",
+              "__guid": "2fabefe4-63d4-47db-ba4c-dff01394a367",
+              "__enabled": true,
+              "AddOnStart": true,
+              "GlowColor": "1,1,1,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
               "__type": "Sandbox.SkinnedModelRenderer",
-              "__guid": "00b40e88-659d-499d-8018-f39d84be5846",
+              "__guid": "724d725f-66e1-4f17-bbe6-ef4ac605bfb1",
               "__enabled": true,
               "AnimationGraph": null,
               "BodyGroups": 18446744073709551615,
@@ -1217,7 +1327,7 @@
             },
             {
               "__type": "Sandbox.ModelCollider",
-              "__guid": "c514c49f-6dc4-46d4-890d-aea34c2c5ff7",
+              "__guid": "67add8a7-2b11-4162-90a4-b87117209294",
               "__enabled": true,
               "Elasticity": null,
               "Friction": null,
@@ -1296,8 +1406,21 @@
           "Tint": "1,1,1,1"
         },
         {
+          "__type": "Glowable",
+          "__guid": "d7256ddf-0603-46c0-b64b-8f4a7183566a",
+          "__enabled": true,
+          "AddOnStart": true,
+          "GlowColor": "0.05116,0.35163,1,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        },
+        {
           "__type": "Sandbox.SkinnedModelRenderer",
-          "__guid": "565f4bff-761f-432d-8599-47a681e3a0f6",
+          "__guid": "cafdfc4c-0ee4-4129-81c4-4b339d2ea308",
           "__enabled": true,
           "AnimationGraph": null,
           "BodyGroups": 18446744073709551615,
@@ -1340,7 +1463,7 @@
         },
         {
           "__type": "Sandbox.ModelCollider",
-          "__guid": "b207ae48-3896-4088-8d4e-71825109021b",
+          "__guid": "69af736d-6499-4015-b1a9-1f225f2c7289",
           "__enabled": true,
           "Elasticity": null,
           "Friction": null,
@@ -1400,8 +1523,21 @@
           "Tint": "1,1,1,1"
         },
         {
+          "__type": "Glowable",
+          "__guid": "8488e278-9e2b-4906-b366-5d58a34b6352",
+          "__enabled": true,
+          "AddOnStart": false,
+          "GlowColor": "1,0,0.88333,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        },
+        {
           "__type": "Sandbox.SkinnedModelRenderer",
-          "__guid": "1714c62f-826f-4232-8a62-c257836fa714",
+          "__guid": "9098beb6-31dc-41ed-a250-87ee8e2b0ca0",
           "__enabled": true,
           "AnimationGraph": null,
           "BodyGroups": 18446744073709551615,
@@ -1444,7 +1580,7 @@
         },
         {
           "__type": "Sandbox.ModelCollider",
-          "__guid": "aeece624-754f-4c2c-b0df-4dbf5b4279cd",
+          "__guid": "ee1d08c0-a49b-454b-b75d-9cf784f5f631",
           "__enabled": true,
           "Elasticity": null,
           "Friction": null,
@@ -1504,8 +1640,21 @@
           "Tint": "1,1,1,1"
         },
         {
+          "__type": "Glowable",
+          "__guid": "905bea83-71d6-4003-ba4e-3547eba9ae36",
+          "__enabled": true,
+          "AddOnStart": true,
+          "GlowColor": "0.73333,1,0,1",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        },
+        {
           "__type": "Sandbox.SkinnedModelRenderer",
-          "__guid": "fc0a4ebb-ed4f-4f60-8e31-8b4ccfc892cb",
+          "__guid": "f71948cf-aef2-449e-b910-6a4fcfd6bfa7",
           "__enabled": true,
           "AnimationGraph": null,
           "BodyGroups": 5,
@@ -1548,7 +1697,7 @@
         },
         {
           "__type": "Sandbox.ModelCollider",
-          "__guid": "89ad6795-7d4d-4cb4-ad11-7460c4158853",
+          "__guid": "a591a11f-84a1-4b58-a2d6-9c06fc4551dd",
           "__enabled": true,
           "Elasticity": null,
           "Friction": null,

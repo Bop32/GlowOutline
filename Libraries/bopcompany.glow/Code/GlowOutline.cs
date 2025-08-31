@@ -23,9 +23,12 @@ public sealed class GlowOutline : PostProcess
 	[Property, Range( 0.25f, 1 ), Step( 0.25f ), Description( "How bright you want the glow to be." ), Feature( "Glow Settings" )]
 	private readonly float glowIntensity = 0.75f;
 
+	[Property, Feature( "Glow Settings" ), Description( "If enabled, automatically finds all objects with a `Glowable` component and applies a glow effect." )]
+	private readonly bool autoFindGlowables = false;
+
 	[Header( "Glow Rendering" )]
 
-	[Property, Title( "Image Downsample" ), Description( "Which downsample method to use when we downscale the texture." ), Feature( "Glow Settings" )]
+	[Property, Title( "Glow Type" ), Description( "Which downsample method to use when we downscale the texture." ), Feature( "Glow Settings" )]
 	private DownSampleMethods DownsampleMethod { get; set; } = DownSampleMethods.GaussianBlur;
 
 	[Property, Title( "Objects" ), Feature( "Objects to Glow" ), InlineEditor( Label = false )]
@@ -50,7 +53,7 @@ public sealed class GlowOutline : PostProcess
 		// This SHOULD only happen in the editor since people like to change editor width and height etc.
 		if ( Screen.Size.x % 2 == 1 || Screen.Size.y % 2 == 1 )
 		{
-			Log.Error( $"Glow Outline: To avoid uneven outlines, please use a screen resolution that is even. Current resolution: `{Screen.Size}`." );
+			Log.Error( $"Glow Outline: To avoid uneven outlines, please use an even screen resolution. This message should only appear in the editor. Current resolution: {Screen.Size}." );
 		}
 
 		maskMaterial = Material.FromShader( "shaders/Mask.shader" );
@@ -65,7 +68,7 @@ public sealed class GlowOutline : PostProcess
 
 		SetTransparentColorToDefault();
 
-		if ( Instance != null )
+		if(Instance != null)
 		{
 			Log.Error( "GlowOutline: Only one instance of GlowOutline is supported. " +
 				"If you want to use multiple GlowOutline components you will need to get call `GetComponent<GlowOutline>()` manually." );
@@ -76,6 +79,13 @@ public sealed class GlowOutline : PostProcess
 		}
 	}
 
+	protected override void OnStart()
+	{
+		if ( !autoFindGlowables ) return;
+
+		InitializeGlowableObjects();
+	}
+
 	protected override void UpdateCommandList()
 	{
 		RenderOutlineEffect();
@@ -83,7 +93,7 @@ public sealed class GlowOutline : PostProcess
 
 	private void RenderOutlineEffect()
 	{
-		if ( objectsToGlow.Count <= 0 ) return;
+		if (objectsToGlow.Count <= 0 ) return;
 
 		RenderTargetHandle maskRT = CreateMaskRenderTarget( MaskRT );
 
@@ -182,7 +192,7 @@ public sealed class GlowOutline : PostProcess
 					glowObject.SetRenderer( glowObject.GameObject.GetComponent<ModelRenderer>() );
 					objectsToGlow[i] = glowObject;
 				}
-
+									 
 				CommandList.DrawRenderer( glowObject.Renderer, maskRenderSetup );
 			}
 
@@ -204,7 +214,7 @@ public sealed class GlowOutline : PostProcess
 			if ( objectsToGlow[i].Color == Color.Transparent )
 			{
 				GlowObject glowObject = objectsToGlow[i];
-				glowObject.SetColor( defaultGlowColor );
+				glowObject.SetColor(defaultGlowColor);
 				objectsToGlow[i] = glowObject;
 			}
 		}
@@ -221,7 +231,7 @@ public sealed class GlowOutline : PostProcess
 			if ( objectsToGlow[i].GameObject != item ) continue;
 
 			GlowObject glowObject = objectsToGlow[i];
-			glowObject.SetColor( color );
+			glowObject.SetColor(color);
 			objectsToGlow[i] = glowObject;
 			break;
 		}
@@ -231,14 +241,14 @@ public sealed class GlowOutline : PostProcess
 	/// Returns the GlowObject for a specific GameObject if it exists.
 	/// </summary>
 
-	public GlowObject GetGlowObject( GameObject item )
+	public GlowObject GetGlowObject(GameObject item)
 	{
-		for ( int i = 0; i < objectsToGlow.Count; i++ )
+		for(int i = 0; i < objectsToGlow.Count; i++)
 		{
-			if ( objectsToGlow[i].GameObject == item ) return objectsToGlow[i];
+			if (objectsToGlow[i].GameObject == item) return objectsToGlow[i];
 		}
 
-		return new GlowObject( null, null, null );
+		return new GlowObject(null, null, null);
 	}
 
 	public List<GlowObject> GlowingObjects()
@@ -334,6 +344,18 @@ public sealed class GlowOutline : PostProcess
 		return (Graphics.DownsampleMethod)DownsampleMethod;
 	}
 
+	private void InitializeGlowableObjects()
+	{
+		IEnumerable<Glowable> glowableObjects = Scene.GetAll<Glowable>();
+
+		foreach ( Glowable item in glowableObjects )
+		{
+			if ( !item.AddOnStart ) continue;
+
+			item.AddSelf( this );
+		}
+	}
+
 	protected override void OnDisabled()
 	{
 		Instance = null;
@@ -390,7 +412,7 @@ public struct GlowObject
 	/// glowingObjects[i] = copy;
 	/// </code>
 	/// </summary>
-	public void SetColor( Color color )
+	public void SetColor(Color color)
 	{
 		Color = color;
 	}
