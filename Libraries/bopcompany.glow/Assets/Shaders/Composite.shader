@@ -49,29 +49,26 @@ VS
 
 PS
 {
-    #include "common/pixel.hlsl"
-
-	Texture2D _SceneTexture < Attribute("SceneTexture");  SrgbRead(true);  >;
+	Texture2D colorBuffer < Attribute( "SceneTexture" ); SrgbRead( true ); >;
 	Texture2D _MaskTexture < Attribute("MaskTexture"); SrgbRead(true); >;
     Texture2D _BlurredTexture < Attribute("BlurredTexture"); SrgbRead(true); >;
 
     float _GlowIntensity < Attribute("GlowIntensity"); >;
-    SamplerState Sampler < Filter( Anisotropic ); AddressU(Clamp); AddressV(Clamp);>;
+    SamplerState Sampler < Filter( Bilinear ); AddressU(Clamp); AddressV(Clamp); >;
     
     RenderState(DepthEnable, false);
 
     float4 MainPs(PixelInput i) : SV_Target0
     {
-        float4 sceneColor       = _SceneTexture.Sample(Sampler, i.vTexCoord);
+        float4 sceneColor       = colorBuffer.Sample(Sampler, i.vTexCoord);
         float4 maskTexture = _MaskTexture.Sample(Sampler, i.vTexCoord);
         float4 blurredTexture    = _BlurredTexture.Sample(Sampler, i.vTexCoord);
-        float4 glow = max(0, blurredTexture - maskTexture) * _GlowIntensity;
 
-        //These lines prevent the glow color from bleeding into each other.
-        float3 additiveGlow = glow.rgb * glow.a;
-        float3 finalColor = sceneColor.rgb + additiveGlow;
+        float glowFactor = saturate(blurredTexture.a - maskTexture.a);
+        float3 glowColor = blurredTexture.rgb * glowFactor * _GlowIntensity;
+
+        float3 finalColor = sceneColor.rgb + glowColor;
 
         return float4(finalColor, 1.0);
     }
 }
-
