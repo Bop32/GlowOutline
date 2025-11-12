@@ -45,16 +45,9 @@ PS
 
 	float4 color < Attribute("GlowColor"); >;
     
-	RenderState(DepthEnable, true);           // enable depth test to prevent mesh overlap
-	RenderState(DepthWriteEnable, false);     // don’t write to depth buffer
-	RenderState(DepthFunc, LESS_EQUAL);     // render if closer or equal
-	RenderState(CullMode, FRONT);           // cull front faces of expanded mesh
-	RenderState(DepthBias, true);             // small offset to prevent z-fighting
-	RenderState(BlendEnable, false);          // fully opaque
-
 	float4 MainPs( PixelInput i ) : SV_Target0
 	{
-		float alpha = saturate(color.a); // or 1 if it’s solid geometry
+		float alpha = saturate(color.a); 
 		return float4(SrgbGammaToLinear(color.rgb), alpha);
 	}
 }

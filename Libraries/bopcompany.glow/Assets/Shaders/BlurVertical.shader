@@ -50,7 +50,10 @@ VS
 PS
 {
 	Texture2D _MainTexture < Attribute("TextureToBlur"); >;
+	
 	float _GlowSize < Attribute("GlowSize"); >;
+	float _MipsLevel <Attribute("MipsLevel"); >;
+
     SamplerState Sampler < Filter( Bilinear ); AddressU(Clamp); AddressV(Clamp); >;
 
 	float4 MainPs( PixelInput i ) : SV_Target0
@@ -61,8 +64,8 @@ PS
 		float total = 0;
 		for( float y = -_GlowSize; y <= _GlowSize; y++ )
 		{
-			float2 offsetUV = (i.vPositionSs.xy + float2(0, y)) / g_vViewportSize.xy; 
-			gSum += _MainTexture.SampleLevel(Sampler, offsetUV, 1) * weight[abs(y)];
+			float2 offsetUV = i.vTexCoord + float2(0, y / g_vViewportSize.y);
+			gSum += _MainTexture.SampleLevel(Sampler, offsetUV, _MipsLevel) * weight[abs(y)];
 
 			total += weight[abs(y)];
 		}

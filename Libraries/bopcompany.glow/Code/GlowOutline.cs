@@ -17,6 +17,10 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 	[Property, Feature( "Glow Settings" ), Title( "Default Color" )]
 	private Color defaultGlowColor = new( 0.10f, 0.32f, 0.79f, 1.00f );
 
+	[Property, Range( 0, 2 ), Step( 1 ), Description( "Changes the resolution of the blur (higher value means lower quality)" ), Feature( "Glow Settings" )]
+	private readonly int glowMips = 2;
+
+
 	[Property, Range( 0.5f, 4.0f ), Step( 0.5f ), Description( "How big you want to the glow to be." ), Feature( "Glow Settings" )]
 	private readonly float glowSize = 1.5f;
 
@@ -40,8 +44,11 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 	private const string MaskRTCopy = "MaskRTCopy";
 
-	private Material maskMaterial;
-
+	private readonly Material maskMaterial = Material.FromShader( "shaders/Mask.shader" );
+	private readonly Material compositeMaterial = Material.FromShader( "shaders/Composite.shader" );
+	private readonly Material verticalBlurMaterial = Material.FromShader( "shaders/BlurVertical.shader" );
+	private readonly Material horizontalBlurMaterial = Material.FromShader( "shaders/BlurHorizontal.shader" );
+	
 	RendererSetup maskRenderSetup = default;
 	public static GlowOutline Instance { get; private set; }
 	public int GlowCount => objectsToGlow.Count;
@@ -56,7 +63,6 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 			Log.Error( $"Glow Outline: To avoid uneven outlines, please use an even screen resolution. This message should only appear in the editor. Current resolution: {Screen.Size}." );
 		}
 
-		maskMaterial = Material.FromShader( "shaders/Mask.shader" );
 		maskRenderSetup = new RendererSetup
 		{
 			Material = maskMaterial,
@@ -70,6 +76,7 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 		if ( Instance != null )
 		{
+			Log.Info( "Here" );
 			Log.Error( "GlowOutline: Only one instance of GlowOutline is supported. " +
 				"If you want to use multiple GlowOutline components you will need to get call `GetComponent<GlowOutline>()` manually." );
 		}
@@ -100,6 +107,7 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 	{
 		RenderTargetHandle maskRT = CreateMaskRenderTarget( MaskRT );
 
+		Log.Info( "Hello" );
 		try
 		{
 			RenderTargetHandle blurredRT = BlurMaskRenderTarget();
@@ -125,7 +133,7 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		commandList.Attributes.Set( "BlurredTexture", blurredRT.ColorTexture );
 		commandList.Attributes.Set( "MaskTexture", maskRT.ColorTexture );
 		commandList.Attributes.Set( "GlowIntensity", glowIntensity );
-		commandList.Blit( Material.FromShader( "shaders/Composite.shader" ) );
+		commandList.Blit( compositeMaterial );
 		commandList.ReleaseRenderTarget( frameRT );
 	}
 
@@ -137,7 +145,7 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		RenderTargetHandle blurredRT = CreateMaskRenderTarget( MaskRTCopy );
 		try
 		{
-			RenderTargetHandle tmpRT = commandList.GetRenderTarget( TmpTexture, ImageFormat.RGBA8888, 2, 1 );
+			RenderTargetHandle tmpRT = commandList.GetRenderTarget( TmpTexture, ImageFormat.RGBA8888, 4, 1 );
 			try
 			{
 				commandList.GenerateMipMaps( blurredRT, downSampleMethod );
@@ -145,7 +153,8 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 				commandList.SetRenderTarget( tmpRT );
 				commandList.Attributes.Set( "TextureToBlur", blurredRT.ColorTexture );
 				commandList.Attributes.Set( "GlowSize", glowSize );
-				commandList.Blit( Material.FromShader( "shaders/BlurVertical.shader" ) );
+				commandList.Attributes.Set( "MipsLevel", glowMips );
+				commandList.Blit( verticalBlurMaterial );
 				commandList.ClearRenderTarget();
 
 				commandList.GenerateMipMaps( tmpRT, downSampleMethod );
@@ -153,7 +162,8 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 				commandList.SetRenderTarget( blurredRT );
 				commandList.Attributes.Set( "VerticalBlurTexture", tmpRT.ColorTexture );
 				commandList.Attributes.Set( "GlowSize", glowSize );
-				commandList.Blit( Material.FromShader( "shaders/BlurHorizontal.shader" ) );
+				commandList.Attributes.Set( "MipsLevel", glowMips );
+				commandList.Blit( horizontalBlurMaterial );
 				commandList.ClearRenderTarget();
 			}
 			finally
@@ -174,12 +184,12 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 	private RenderTargetHandle CreateMaskRenderTarget( string name )
 	{
-		RenderTargetHandle maskRT = commandList.GetRenderTarget( name, ImageFormat.RGBA8888, 2, 1 );
+		RenderTargetHandle maskRT = commandList.GetRenderTarget( name, ImageFormat.RGBA8888, 1, 1 );
 				   
 		try
 		{
 			commandList.SetRenderTarget( maskRT );
-			commandList.Clear( Color.Transparent, true, false, true );
+			commandList.Clear( Color.Transparent, true, true, true );
 
 			for ( int i = 0; i < objectsToGlow.Count; i++ )
 			{
@@ -351,7 +361,7 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 		foreach ( Glowable item in glowableObjects )
 		{
-			if ( !item.AddOnStart ) continue;
+			if ( !item.AddOnStart || Contains(item.GameObject)) continue;
 
 			item.AddSelf( this );
 		}

@@ -90,6 +90,7 @@
               "Priority": 1,
               "RenderExcludeTags": "",
               "RenderTags": "",
+              "RenderTexture": null,
               "TargetEye": "None",
               "Viewport": "0,0,1,1",
               "ZFar": 10000,
@@ -164,8 +165,153 @@
               "defaultGlowColor": "0.1,0.32,0.79,1",
               "DownsampleMethod": "GaussianBlur",
               "glowIntensity": 1,
+              "glowMips": 2,
               "glowSize": 4,
-              "objectsToGlow": [],
+              "objectsToGlow": [
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "9a50ed09-ac8f-4609-a200-761f07ee1b56"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "f4354902-3f56-42d1-bae9-6a41c6365889",
+                    "go": "9a50ed09-ac8f-4609-a200-761f07ee1b56",
+                    "component_type": "ModelRenderer"
+                  },
+                  "Color": "0.9907,0.9907,0.9907,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "c4dbd39e-eefb-4b57-8d7a-eb674e7c5b8e"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "19e302a7-953a-4211-989d-028fed382f0c",
+                    "go": "c4dbd39e-eefb-4b57-8d7a-eb674e7c5b8e",
+                    "component_type": "SkinnedModelRenderer"
+                  },
+                  "Color": "0,1,0.06667,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "d4496338-b3ce-4ad5-9b7b-71edc4fd5c90"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "0934fa61-128b-4a5c-842b-5c7756b82dd7",
+                    "go": "d4496338-b3ce-4ad5-9b7b-71edc4fd5c90",
+                    "component_type": "SkinnedModelRenderer"
+                  },
+                  "Color": "1,0.76876,0.26977,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "72914f54-a166-4764-9ea5-f33f151440a1"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "b1bebc20-fe0e-4c02-a0e0-be46ead19a21",
+                    "go": "72914f54-a166-4764-9ea5-f33f151440a1",
+                    "component_type": "ModelRenderer"
+                  },
+                  "Color": "0.69163,0.52558,1,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "e612a9ed-04ed-4afb-b40d-ee2279ebb255"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "bd66a1b9-5fd6-4f45-9418-f3b5bd1b7aa4",
+                    "go": "e612a9ed-04ed-4afb-b40d-ee2279ebb255",
+                    "component_type": "ModelRenderer"
+                  },
+                  "Color": "0.02297,0.13691,0.54884,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "1c847147-38dd-425b-8fdc-1a0dacaeb73f"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "80bed61f-d02d-4cc6-8751-4e7dd7f8800a",
+                    "go": "1c847147-38dd-425b-8fdc-1a0dacaeb73f",
+                    "component_type": "ModelRenderer"
+                  },
+                  "Color": "0.05581,1,0.66954,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "d93f436f-dada-4772-be9e-788a558d167a"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "0b65b217-8209-451e-8925-9aa1e0c08107",
+                    "go": "d93f436f-dada-4772-be9e-788a558d167a",
+                    "component_type": "SkinnedModelRenderer"
+                  },
+                  "Color": "0,0.40465,0.67442,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "604a92dc-1a53-43c3-a33b-8d4c88213c98"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "1f03703e-e1be-483f-a3f7-03fa74ee20bc",
+                    "go": "604a92dc-1a53-43c3-a33b-8d4c88213c98",
+                    "component_type": "SkinnedModelRenderer"
+                  },
+                  "Color": "1,1,1,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "f6a3e8da-0a9f-4914-acd1-a1dbc175b6a4"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "626fe028-27e8-4a47-bd9c-c79e703e8f58",
+                    "go": "f6a3e8da-0a9f-4914-acd1-a1dbc175b6a4",
+                    "component_type": "SkinnedModelRenderer"
+                  },
+                  "Color": "0.05116,0.35163,1,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "aec47106-2d43-4941-8d46-19165f937f8a"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "e549a213-f2f0-4a83-afd7-2b30f956ea4c",
+                    "go": "aec47106-2d43-4941-8d46-19165f937f8a",
+                    "component_type": "SkinnedModelRenderer"
+                  },
+                  "Color": "0.73333,1,0,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "6212e3e9-4e6b-4f79-ba5d-58bde62ed4b3"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "16be97bd-d5d3-4289-87df-440329b5b287",
+                    "go": "6212e3e9-4e6b-4f79-ba5d-58bde62ed4b3",
+                    "component_type": "SkinnedModelRenderer"
+                  },
+                  "Color": "0.13349,0.03721,1,1"
+                }
+              ],
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -635,6 +781,7 @@
               "__type": "Sandbox.ModelCollider",
               "__guid": "b9ee7ad5-a9b8-4013-a4df-5de91565f8d0",
               "__enabled": true,
+              "ColliderFlags": 0,
               "Elasticity": null,
               "Friction": null,
               "IsTrigger": false,
@@ -735,6 +882,7 @@
               "__type": "Sandbox.ModelCollider",
               "__guid": "bbf7142c-02fc-467a-9884-97324de827ab",
               "__enabled": true,
+              "ColliderFlags": 0,
               "Elasticity": null,
               "Friction": null,
               "IsTrigger": false,
@@ -835,6 +983,7 @@
               "__type": "Sandbox.ModelCollider",
               "__guid": "f0149b04-6320-4bb6-a0b5-77618d55becc",
               "__enabled": true,
+              "ColliderFlags": 0,
               "Elasticity": null,
               "Friction": null,
               "IsTrigger": false,
@@ -922,6 +1071,7 @@
               "__type": "Sandbox.ModelCollider",
               "__guid": "09a3e606-e07d-446c-bde5-ec8520bdb6d3",
               "__enabled": true,
+              "ColliderFlags": 0,
               "Elasticity": null,
               "Friction": null,
               "IsTrigger": false,
@@ -1022,6 +1172,7 @@
               "__type": "Sandbox.ModelCollider",
               "__guid": "b1fd34f1-2989-4824-b43f-416ea04261fa",
               "__enabled": true,
+              "ColliderFlags": 0,
               "Elasticity": null,
               "Friction": null,
               "IsTrigger": false,
@@ -1228,6 +1379,7 @@
               "__type": "Sandbox.ModelCollider",
               "__guid": "1ff9a3c9-3b0a-47a0-a16d-cbd0c43271f4",
               "__enabled": true,
+              "ColliderFlags": 0,
               "Elasticity": null,
               "Friction": null,
               "IsTrigger": false,
@@ -1346,6 +1498,7 @@
               "__type": "Sandbox.ModelCollider",
               "__guid": "124f2ed6-751d-4f00-8b25-9f2f810abdc3",
               "__enabled": true,
+              "ColliderFlags": 0,
               "Elasticity": null,
               "Friction": null,
               "IsTrigger": false,
@@ -1483,6 +1636,7 @@
           "__type": "Sandbox.ModelCollider",
           "__guid": "4490aab2-a6d9-4a23-9d06-1dcfca335e63",
           "__enabled": true,
+          "ColliderFlags": 0,
           "Elasticity": null,
           "Friction": null,
           "IsTrigger": false,
@@ -1601,6 +1755,7 @@
           "__type": "Sandbox.ModelCollider",
           "__guid": "f2a3f2b3-3a9c-40e2-95c2-4cb45a789b8e",
           "__enabled": true,
+          "ColliderFlags": 0,
           "Elasticity": null,
           "Friction": null,
           "IsTrigger": false,
@@ -1719,6 +1874,7 @@
           "__type": "Sandbox.ModelCollider",
           "__guid": "477fca17-fbf3-40ac-be57-30f88d05c1ba",
           "__enabled": true,
+          "ColliderFlags": 0,
           "Elasticity": null,
           "Friction": null,
           "IsTrigger": false,
@@ -1737,6 +1893,68 @@
           "Static": true,
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "6212e3e9-4e6b-4f79-ba5d-58bde62ed4b3",
+      "__version": 1,
+      "Flags": 0,
+      "Name": "Cube",
+      "Position": "-54.00127,-119.1008,20.80046",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkInterpolation": true,
+      "NetworkOrphaned": 0,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.SkinnedModelRenderer",
+          "__guid": "16be97bd-d5d3-4289-87df-440329b5b287",
+          "__enabled": true,
+          "AnimationGraph": null,
+          "BodyGroups": 341,
+          "BoneMergeTarget": null,
+          "CreateAttachments": false,
+          "CreateBoneObjects": false,
+          "LodOverride": null,
+          "MaterialGroup": null,
+          "MaterialOverride": null,
+          "Materials": null,
+          "Model": "models/citizen/citizen.vmdl",
+          "Morphs": {},
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Parameters": {
+            "bools": {},
+            "ints": {},
+            "floats": {},
+            "vectors": {},
+            "rotations": {}
+          },
+          "PlaybackRate": 1,
+          "RenderOptions": {
+            "GameLayer": true,
+            "OverlayLayer": false,
+            "BloomLayer": false,
+            "AfterUILayer": false
+          },
+          "RenderType": "On",
+          "Sequence": {
+            "Name": null,
+            "Looping": true,
+            "Blending": false
+          },
+          "Tint": "1,1,1,1",
+          "UseAnimGraph": true
         }
       ],
       "Children": []

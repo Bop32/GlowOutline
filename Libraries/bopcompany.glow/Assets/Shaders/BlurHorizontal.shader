@@ -52,9 +52,13 @@ PS
 {
 
     Texture2D _MainTexture <Attribute("VerticalBlurTexture");  >;
+	
 	float _GlowSize < Attribute("GlowSize"); >;
-    SamplerState Sampler < Filter( Bilinear ); AddressU(Clamp); AddressV(Clamp); >;
+    int _MipsLevel <Attribute("MipsLevel"); >;
+
+	SamplerState Sampler < Filter( Bilinear ); AddressU(Clamp); AddressV(Clamp); >;
     
+
 	float4 MainPs( PixelInput i ) : SV_Target0
 	{
 		const float weight[41] = {0.014, 0.015, 0.017, 0.018, 0.019, 0.020, 0.021, 0.022, 0.024, 0.025, 0.026, 0.027, 0.028, 0.028, 0.029, 0.030, 0.030, 0.031, 0.031, 0.031, 0.031, 0.031, 0.031, 0.031, 0.030, 0.030, 0.029, 0.028, 0.028, 0.027, 0.026, 0.025, 0.024, 0.022, 0.021, 0.020, 0.019, 0.018, 0.017, 0.015, 0.014};
@@ -63,8 +67,8 @@ PS
 		float total = 0;
 		for( float x = -_GlowSize; x <= _GlowSize; x++ )
 		{
-			float2 UV = ( i.vPositionSs.xy + float2(x, 0) ) / g_vViewportSize.xy;
-			gSum += _MainTexture.SampleLevel(Sampler, UV, 1 ) * weight[abs(x)];
+			float2 offsetUV = i.vTexCoord + float2(x / g_vViewportSize.x, 0);
+			gSum += _MainTexture.SampleLevel(Sampler, offsetUV, _MipsLevel ) * weight[abs(x)];
 			total += weight[abs(x)];
 		}
 
