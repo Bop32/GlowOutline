@@ -107,7 +107,6 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 	{
 		RenderTargetHandle maskRT = CreateMaskRenderTarget( MaskRT );
 
-		Log.Info( "Hello" );
 		try
 		{
 			RenderTargetHandle blurredRT = BlurMaskRenderTarget();
