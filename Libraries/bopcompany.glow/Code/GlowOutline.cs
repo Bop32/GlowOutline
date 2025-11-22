@@ -50,7 +50,6 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 	private readonly Material horizontalBlurMaterial = Material.FromShader( "shaders/BlurHorizontal.shader" );
 	
 	RendererSetup maskRenderSetup = default;
-	public static GlowOutline Instance { get; private set; }
 	public int GlowCount => objectsToGlow.Count;
 
 	private readonly CommandList commandList = new( "GlowOutline" );
@@ -73,17 +72,6 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		if ( objectsToGlow == null ) objectsToGlow = new();
 
 		SetTransparentColorToDefault();
-
-		if ( Instance != null )
-		{
-			Log.Info( "Here" );
-			Log.Error( "GlowOutline: Only one instance of GlowOutline is supported. " +
-				"If you want to use multiple GlowOutline components you will need to get call `GetComponent<GlowOutline>()` manually." );
-		}
-		else
-		{
-			Instance = this;
-		}
 	}
 
 	protected override void OnStart()
@@ -368,7 +356,6 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 	protected override void OnDisabled()
 	{
-		Instance = null;
 		commandList.Reset();
 	}
 }
