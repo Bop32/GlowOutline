@@ -32,27 +32,29 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 	[Header( "Glow Rendering" )]
 
-	[Property, Title( "Glow Type" ), Description( "Which downsample method to use when we downscale the texture." ), Feature( "Glow Settings" )]
-	private DownSampleMethods DownsampleMethod { get; set; } = DownSampleMethods.GaussianBlur;
+	[Property, Title( "Glow Type" ), Description( "Changes the downsample method that is used to create different outline effects." ), Feature( "Glow Settings" )]
+	private DownSampleMethods DownSampleMethod { get; set; } = DownSampleMethods.GaussianBlur;
 
 	[Property, Title( "Objects" ), Feature( "Objects to Glow" ), InlineEditor( Label = false )]
 	private List<GlowObject> objectsToGlow = null;
 
-	private const string TmpTexture = "TmpTexture";
+	private const string TMP_TEXTURE = "TmpTexture";
 
-	private const string MaskRT = "MaskRT";
+	private const string MASK_RENDER_TARGET = "MaskRT";
 
-	private const string MaskRTCopy = "MaskRTCopy";
+	private const string MASK_RENDER_TARGET_COPY = "MaskRTCopy";
+
+	private const string GLOW_COLOR_ATTRIBUTE = "GlowColor";
 
 	private readonly Material maskMaterial = Material.FromShader( "shaders/Mask.shader" );
 	private readonly Material compositeMaterial = Material.FromShader( "shaders/Composite.shader" );
 	private readonly Material verticalBlurMaterial = Material.FromShader( "shaders/BlurVertical.shader" );
 	private readonly Material horizontalBlurMaterial = Material.FromShader( "shaders/BlurHorizontal.shader" );
-	
-	RendererSetup maskRenderSetup = default;
-	public int GlowCount => objectsToGlow.Count;
 
 	private readonly CommandList commandList = new( "GlowOutline" );
+
+	RendererSetup maskRenderSetup = default;
+	public int Count => objectsToGlow.Count;
 
 	protected override void OnAwake()
 	{
@@ -69,9 +71,11 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 			Color = null
 		};
 
-		if ( objectsToGlow == null ) objectsToGlow = new();
+		objectsToGlow ??= new();
 
 		SetTransparentColorToDefault();
+
+
 	}
 
 	protected override void OnStart()
@@ -83,17 +87,16 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 	public override void Render()
 	{
-		if ( GlowCount <= 0 ) return;
+		if ( Count <= 0 ) return;
 
 		commandList.Reset();
 		RenderOutlineEffect();
-
 		InsertCommandList( commandList, Stage.AfterTransparent, 100, "GlowOutline" );
 	}
 
 	private void RenderOutlineEffect()
 	{
-		RenderTargetHandle maskRT = CreateMaskRenderTarget( MaskRT );
+		RenderTargetHandle maskRT = CreateMaskRenderTarget( MASK_RENDER_TARGET );
 
 		try
 		{
@@ -129,14 +132,13 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		Graphics.DownsampleMethod downSampleMethod = GetDownSampleMethod();
 
 		// Create a copy of the mask render target to avoid modifying the original mask.
-		RenderTargetHandle blurredRT = CreateMaskRenderTarget( MaskRTCopy );
+		RenderTargetHandle blurredRT = CreateMaskRenderTarget( MASK_RENDER_TARGET_COPY );
 		try
 		{
-			RenderTargetHandle tmpRT = commandList.GetRenderTarget( TmpTexture, ImageFormat.RGBA8888, 4, 1 );
+			RenderTargetHandle tmpRT = commandList.GetRenderTarget( TMP_TEXTURE, ImageFormat.RGBA8888, 4, 1 );
 			try
 			{
 				commandList.GenerateMipMaps( blurredRT, downSampleMethod );
-
 				commandList.SetRenderTarget( tmpRT );
 				commandList.Attributes.Set( "TextureToBlur", blurredRT.ColorTexture );
 				commandList.Attributes.Set( "GlowSize", glowSize );
@@ -145,7 +147,6 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 				commandList.ClearRenderTarget();
 
 				commandList.GenerateMipMaps( tmpRT, downSampleMethod );
-
 				commandList.SetRenderTarget( blurredRT );
 				commandList.Attributes.Set( "VerticalBlurTexture", tmpRT.ColorTexture );
 				commandList.Attributes.Set( "GlowSize", glowSize );
@@ -165,14 +166,13 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		}
 
 		commandList.ClearRenderTarget();
-
 		return blurredRT;
 	}
 
 	private RenderTargetHandle CreateMaskRenderTarget( string name )
 	{
 		RenderTargetHandle maskRT = commandList.GetRenderTarget( name, ImageFormat.RGBA8888, 1, 1 );
-				   
+
 		try
 		{
 			commandList.SetRenderTarget( maskRT );
@@ -181,16 +181,11 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 			for ( int i = 0; i < objectsToGlow.Count; i++ )
 			{
 				GlowObject glowObject = objectsToGlow[i];
-				commandList.Attributes.Set( "GlowColor", glowObject.Color );
 
 				if ( glowObject.GameObject == null ) continue;
 
-				if ( glowObject.Renderer == null )
-				{
-					glowObject.SetRenderer( glowObject.GameObject.GetComponent<ModelRenderer>() );
-					objectsToGlow[i] = glowObject;
-				}
-
+				commandList.Attributes.Set( GLOW_COLOR_ATTRIBUTE, glowObject.Color );
+				glowObject.Renderer ??= glowObject.GameObject.GetComponent<ModelRenderer>();
 				commandList.DrawRenderer( glowObject.Renderer, maskRenderSetup );
 			}
 
@@ -209,12 +204,9 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 	{
 		for ( int i = 0; i < objectsToGlow.Count; i++ )
 		{
-			if ( objectsToGlow[i].Color == Color.Transparent )
-			{
-				GlowObject glowObject = objectsToGlow[i];
-				glowObject.SetColor( defaultGlowColor );
-				objectsToGlow[i] = glowObject;
-			}
+			if ( objectsToGlow[i].Color != Color.Transparent ) continue;
+
+			objectsToGlow[i].Color = defaultGlowColor;
 		}
 	}
 
@@ -228,9 +220,7 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		{
 			if ( objectsToGlow[i].GameObject != item ) continue;
 
-			GlowObject glowObject = objectsToGlow[i];
-			glowObject.SetColor( color );
-			objectsToGlow[i] = glowObject;
+			objectsToGlow[i].Color = color;
 			break;
 		}
 	}
@@ -339,7 +329,7 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 	private Graphics.DownsampleMethod GetDownSampleMethod()
 	{
-		return (Graphics.DownsampleMethod)DownsampleMethod;
+		return (Graphics.DownsampleMethod)DownSampleMethod;
 	}
 
 	private void FindGlowableObjects()
@@ -348,7 +338,7 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 		foreach ( Glowable item in glowableObjects )
 		{
-			if ( !item.AddOnStart || Contains(item.GameObject)) continue;
+			if ( !item.AddOnStart || Contains( item.GameObject ) ) continue;
 
 			item.AddSelf( this );
 		}
@@ -360,8 +350,8 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 	}
 }
 
-//WARNING: If you add / remove any fields from this struct, it will remove all objects in the list.
-public struct GlowObject
+//WARNING: If you add / remove any fields from this class, it will remove all objects in the list.
+public class GlowObject
 {
 	public GameObject GameObject { get; set; }
 	[Hide]
@@ -385,32 +375,5 @@ public struct GlowObject
 		Color = color;
 		GameObject = gameObject;
 		Renderer = renderer;
-	}
-
-	/// <summary>
-	/// Sets the renderer. Since this is a struct, changes won't stay unless you re-assign it.
-	/// Example:
-	/// <code>
-	/// GlowObject copy = glowingObjects[i];
-	/// copy.SetRenderer(GameObject.GetComponent(ModelRenderer));
-	/// glowingObjects[i] = copy;
-	/// </code>
-	/// </summary>
-	public void SetRenderer( Renderer renderer )
-	{
-		Renderer = renderer;
-	}
-	/// <summary>
-	/// Sets the color. Since this is a struct, changes won't stay unless you re-assign it.
-	/// Example:
-	/// <code>
-	/// GlowObject copy = glowingObjects[i];
-	/// copy.SetColor(Color.Blue);
-	/// glowingObjects[i] = copy;
-	/// </code>
-	/// </summary>
-	public void SetColor( Color color )
-	{
-		Color = color;
 	}
 }

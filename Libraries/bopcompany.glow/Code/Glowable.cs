@@ -10,7 +10,7 @@ public sealed class Glowable : Component
 	[Property]
 	public Color GlowColor { get; set; } = Color.White;
 
-	[Property, Description("If true, it will start glowing when game is started. Otherwise nothing will happen.")]
+	[Property, Description( "If true, on scene load it will automatically start glowing the object" )]
 	public bool AddOnStart { get; set; } = false;
 
 	public void SetColor( GlowOutline glowOutline )
@@ -22,7 +22,7 @@ public sealed class Glowable : Component
 		glowOutline.SetGlowColor( GameObject, color );
 	}
 
-	public void RemoveSelf(GlowOutline glowOutline)
+	public void RemoveSelf( GlowOutline glowOutline )
 	{
 		glowOutline.Remove( GameObject );
 	}
