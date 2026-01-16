@@ -10,35 +10,53 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 	{
 		Box = 0,
 		GaussianBlur = 1,
-		Max = 3,
-		Min = 4,
+	}
+
+	public enum OutlinePresets : byte
+	{
+		Valve,
+		Other,
 	}
 
 	[Property, Feature( "Glow Settings" ), Title( "Default Color" )]
 	private Color defaultGlowColor = new( 0.10f, 0.32f, 0.79f, 1.00f );
 
-	[Property, Range( 0, 2 ), Step( 1 ), Description( "Changes the resolution of the blur (higher value means lower quality)" ), Feature( "Glow Settings" )]
-	private readonly int glowMips = 2;
+	[Property, Range( 0, 3 ), Step( 1 ), Description( "Changes the resolution of the blur (higher value means lower quality)" ), Feature( "Glow Settings" )]
+	private int glowMips = 2;
 
-
-	[Property, Range( 0.5f, 4.0f ), Step( 0.5f ), Description( "How big you want to the glow to be." ), Feature( "Glow Settings" )]
-	private readonly float glowSize = 1.5f;
-
-	[Property, Range( 0.25f, 1 ), Step( 0.25f ), Description( "How bright you want the glow to be." ), Feature( "Glow Settings" )]
-	private readonly float glowIntensity = 0.75f;
+	[Property, Range( 0.25f, 10.0f ), Step( 0.25f ), Description( "How bright you want the glow to be." ), Feature( "Glow Settings" )]
+	private float glowIntensity = 5.0f;
 
 	[Property, Feature( "Glow Settings" ), Description( "If enabled, automatically finds all objects with a `Glowable` component and applies a glow effect." )]
 	private readonly bool autoFindGlowables = false;
 
 	[Header( "Glow Rendering" )]
 
-	[Property, Title( "Glow Type" ), Description( "Changes the downsample method that is used to create different outline effects." ), Feature( "Glow Settings" )]
+	[Property, Title( "Glow Types" ), Description( "Changes the downsample method that is used to create different outline effects." ), Feature( "Glow Settings" )]
 	private DownSampleMethods DownSampleMethod { get; set; } = DownSampleMethods.GaussianBlur;
+
+	[Property, Title( "Glow Presets" ), Description( "Some presets if you are lazy." ), Feature( "Glow Settings" )]
+	private OutlinePresets OutlinePreset { get; set; } = OutlinePresets.Valve;
+
+	[Property, Title( "Glow Presets" ), Button( "Apply Preset" ), Feature( "Glow Settings" )]
+	public void ApplyPreset()
+	{
+		if ( OutlinePreset == OutlinePresets.Valve )
+		{
+			glowMips = 2;
+			DownSampleMethod = DownSampleMethods.GaussianBlur;
+			glowIntensity = 5.0f;
+		}
+		else
+		{
+			glowMips = 1;
+			DownSampleMethod = DownSampleMethods.Box;
+			glowIntensity = 5.0f;
+		}
+	}
 
 	[Property, Title( "Objects" ), Feature( "Objects to Glow" ), InlineEditor( Label = false )]
 	private List<GlowObject> objectsToGlow = null;
-
-	private const string TMP_TEXTURE = "TmpTexture";
 
 	private const string MASK_RENDER_TARGET = "MaskRT";
 
@@ -48,9 +66,6 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 	private readonly Material maskMaterial = Material.FromShader( "shaders/Mask.shader" );
 	private readonly Material compositeMaterial = Material.FromShader( "shaders/Composite.shader" );
-	private readonly Material verticalBlurMaterial = Material.FromShader( "shaders/BlurVertical.shader" );
-	private readonly Material horizontalBlurMaterial = Material.FromShader( "shaders/BlurHorizontal.shader" );
-
 	private readonly CommandList commandList = new( "GlowOutline" );
 
 	RendererSetup maskRenderSetup = default;
@@ -74,8 +89,6 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		objectsToGlow ??= new();
 
 		SetTransparentColorToDefault();
-
-
 	}
 
 	protected override void OnStart()
@@ -96,18 +109,18 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 	private void RenderOutlineEffect()
 	{
-		RenderTargetHandle maskRT = CreateMaskRenderTarget( MASK_RENDER_TARGET );
+		RenderTargetHandle maskRT = CreateMaskRenderTarget( MASK_RENDER_TARGET, 1 );
 
 		try
 		{
-			RenderTargetHandle blurredRT = BlurMaskRenderTarget();
+			RenderTargetHandle downScaledRT = DownScaledRenderTarget();
 			try
 			{
-				Composite( blurredRT, maskRT );
+				Composite( downScaledRT, maskRT );
 			}
 			finally
 			{
-				commandList.ReleaseRenderTarget( blurredRT );
+				commandList.ReleaseRenderTarget( downScaledRT );
 			}
 		}
 		finally
@@ -116,62 +129,39 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		}
 	}
 
-	private void Composite( RenderTargetHandle blurredRT, RenderTargetHandle maskRT )
+	private void Composite( RenderTargetHandle downScaledRT, RenderTargetHandle maskRT )
 	{
 		RenderTargetHandle frameRT = commandList.Attributes.GrabFrameTexture( "SceneTexture" );
 
-		commandList.Attributes.Set( "BlurredTexture", blurredRT.ColorTexture );
+		commandList.Attributes.Set( "DownScaledTexture", downScaledRT.ColorTexture );
 		commandList.Attributes.Set( "MaskTexture", maskRT.ColorTexture );
 		commandList.Attributes.Set( "GlowIntensity", glowIntensity );
+		commandList.Attributes.Set( "GlowMips", glowMips );
 		commandList.Blit( compositeMaterial );
 		commandList.ReleaseRenderTarget( frameRT );
 	}
 
-	private RenderTargetHandle BlurMaskRenderTarget()
+	private RenderTargetHandle DownScaledRenderTarget()
 	{
-		Graphics.DownsampleMethod downSampleMethod = GetDownSampleMethod();
+		RenderTargetHandle downScaledRT = CreateMaskRenderTarget( MASK_RENDER_TARGET_COPY, 4 );
 
-		// Create a copy of the mask render target to avoid modifying the original mask.
-		RenderTargetHandle blurredRT = CreateMaskRenderTarget( MASK_RENDER_TARGET_COPY );
 		try
 		{
-			RenderTargetHandle tmpRT = commandList.GetRenderTarget( TMP_TEXTURE, ImageFormat.RGBA8888, 4, 1 );
-			try
-			{
-				commandList.GenerateMipMaps( blurredRT, downSampleMethod );
-				commandList.SetRenderTarget( tmpRT );
-				commandList.Attributes.Set( "TextureToBlur", blurredRT.ColorTexture );
-				commandList.Attributes.Set( "GlowSize", glowSize );
-				commandList.Attributes.Set( "MipsLevel", glowMips );
-				commandList.Blit( verticalBlurMaterial );
-				commandList.ClearRenderTarget();
+			// Generate mipmaps (just downscales the texture)
+			commandList.GenerateMipMaps( downScaledRT, GetDownSampleMethod() );
 
-				commandList.GenerateMipMaps( tmpRT, downSampleMethod );
-				commandList.SetRenderTarget( blurredRT );
-				commandList.Attributes.Set( "VerticalBlurTexture", tmpRT.ColorTexture );
-				commandList.Attributes.Set( "GlowSize", glowSize );
-				commandList.Attributes.Set( "MipsLevel", glowMips );
-				commandList.Blit( horizontalBlurMaterial );
-				commandList.ClearRenderTarget();
-			}
-			finally
-			{
-				commandList.ReleaseRenderTarget( tmpRT );
-			}
+			return downScaledRT;
 		}
 		catch
 		{
-			commandList.ReleaseRenderTarget( blurredRT );
+			commandList.ReleaseRenderTarget( downScaledRT );
 			throw;
 		}
-
-		commandList.ClearRenderTarget();
-		return blurredRT;
 	}
 
-	private RenderTargetHandle CreateMaskRenderTarget( string name )
+	private RenderTargetHandle CreateMaskRenderTarget( string name, int mipsLevel = 1 )
 	{
-		RenderTargetHandle maskRT = commandList.GetRenderTarget( name, ImageFormat.RGBA8888, 1, 1 );
+		RenderTargetHandle maskRT = commandList.GetRenderTarget( name, ImageFormat.RGBA8888, mipsLevel, 1 );
 
 		try
 		{
