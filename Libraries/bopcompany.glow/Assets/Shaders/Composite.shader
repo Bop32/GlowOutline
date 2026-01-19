@@ -56,20 +56,16 @@ PS
     float4 MainPs(PixelInput i) : SV_Target0
     {
         float4 sceneColor = colorBuffer.Sample(g_sBilinearClamp, i.vTexCoord);
-        float4 maskTexture = _MaskTexture.Sample(g_sBilinearClamp, i.vTexCoord);
-        
-        float4 glow = float4(0, 0, 0, 0);
-
-        for(int mipsLevel = _MipsLevel; mipsLevel >= 0; mipsLevel--)
-        {
-            glow += _DownScaledTexture.SampleLevel(g_sBilinearClamp, i.vTexCoord, mipsLevel);
-        }
-
-        float glowFactor = 1.0 - maskTexture.a;
-        float3 glowColor = glow.rgb * glow.a * glowFactor * _GlowIntensity;
-        
+    
+        // Blurred glow (may have spread into visible areas)
+        float4 glow = _DownScaledTexture.Sample(g_sBilinearClamp, i.vTexCoord);
+    
+        // Original mask before blur (sharp edges showing occlusion)
+        float4 mask = _MaskTexture.Sample(g_sBilinearClamp, i.vTexCoord);
+    
+        float3 glowColor = glow.rgb * glow.a * (1 - mask.a) * _GlowIntensity;
         float3 finalColor = sceneColor.rgb + glowColor;
-        
+    
         return float4(finalColor, 1.0);
     }
 }

@@ -174,9 +174,9 @@
               "autoFindGlowables": true,
               "defaultGlowColor": "0.1,0.32,0.79,1",
               "DownSampleMethod": "GaussianBlur",
-              "glowIntensity": 1,
-              "glowMips": 2,
-              "glowSize": 4,
+              "glowIntensity": 5,
+              "glowMips": 1,
+              "glowSize": 1,
               "objectsToGlow": [
                 {
                   "GameObject": {
@@ -241,7 +241,7 @@
                     "go": "e612a9ed-04ed-4afb-b40d-ee2279ebb255",
                     "component_type": "ModelRenderer"
                   },
-                  "Color": "0.02297,0.13691,0.54884,1"
+                  "Color": "0,0.16225,0.74884,1"
                 },
                 {
                   "GameObject": {
@@ -320,6 +320,19 @@
                     "component_type": "SkinnedModelRenderer"
                   },
                   "Color": "0.13349,0.03721,1,1"
+                },
+                {
+                  "GameObject": {
+                    "_type": "gameobject",
+                    "go": "11a3a928-c092-4d61-b58f-904fa446d8c6"
+                  },
+                  "Renderer": {
+                    "_type": "component",
+                    "component_id": "2bc4e148-ed35-432a-b9f7-a6519f979c6f",
+                    "go": "11a3a928-c092-4d61-b58f-904fa446d8c6",
+                    "component_type": "ModelRenderer"
+                  },
+                  "Color": "1,1,1,1"
                 }
               ],
               "OnComponentDestroy": null,
@@ -327,7 +340,8 @@
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null
+              "OnComponentUpdate": null,
+              "OutlinePreset": "Valve"
             }
           ],
           "Children": []
@@ -455,7 +469,7 @@
       "Name": "Wall",
       "Position": "153.9897,-87.1722,132.3636",
       "Rotation": "0,0,0.5,0.8660254",
-      "Scale": "1,6.453552,3.942272",
+      "Scale": "1,13.10357,6.802269",
       "Tags": "",
       "Enabled": true,
       "NetworkMode": 2,
