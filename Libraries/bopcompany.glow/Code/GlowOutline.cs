@@ -15,7 +15,7 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 	public enum OutlinePresets : byte
 	{
 		Valve,
-		Other,
+		Regular,
 	}
 
 	[Property, Feature( "Glow Settings" ), Title( "Default Color" )]
