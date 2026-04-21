@@ -19,6 +19,12 @@ To add an object click the "+" symbol then either drag the object you want to gl
 Once the object is dragged onto the bar you can either leave the color how it is and it will choose the default color in the other tab, or you can select a color. If done correctly it should look something like this (There is no default anti aliasing in the engine so it might be blocky):
 
 <img width="631" height="344" alt="image" src="https://github.com/user-attachments/assets/18261743-3910-48ee-a828-f849add33a5e" />
+<img width="631" height="344" alt="image" src="https://github.com/user-attachments/assets/9f43a04e-509e-4441-9fa2-62d69986e006" />
+
+
+Includes just regular outlines without the glow on it:
+<img width="631" height="344" alt="image" src="https://github.com/user-attachments/assets/50a65ae7-e3d5-4169-9ae2-1005bbc71455" />
+
 
 
 Documentation:
