@@ -3,7 +3,7 @@
 
 FEATURES
 {
-    #include "common/features.hlsl"
+#include "common/features.hlsl"
 }
 
 MODES
@@ -14,9 +14,10 @@ MODES
 
 COMMON
 {
-	#include "common/shared.hlsl"
+#include "common/shared.hlsl"
 }
 
+// clang-format off
 struct VertexInput
 {
     float3 vPositionOs : POSITION < Semantic( PosXyz ); >;
@@ -62,7 +63,7 @@ PS
 
 		float4 gSum = 0;
 		float total = 0;
-		for( float y = -_GlowSize; y <= _GlowSize; y++ )
+		for( int y = -_GlowSize; y <= _GlowSize; y++ )
 		{
 			float2 offsetUV = i.vTexCoord + float2(0, y / g_vViewportSize.y);
 			gSum += _MainTexture.SampleLevel(Sampler, offsetUV, _MipsLevel) * weight[abs(y)];

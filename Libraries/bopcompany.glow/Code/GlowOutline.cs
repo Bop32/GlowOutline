@@ -24,7 +24,7 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 	[Property, Range( 0, 3 ), Step( 1 ), Description( "Changes the resolution of the blur (higher value means lower quality)" ), Feature( "Glow Settings" )]
 	private int glowMips = 2;
 
-	[Property, Range( 0.25f, 10.0f ), Step( 0.25f ), Description( "How big you want the glow to be." ), Feature( "Glow Settings" )]
+	[Property, Range(1.0f, 10.0f ), Step( 0.25f ), Description( "How big you want the glow to be." ), Feature( "Glow Settings" )]
 	private float glowSize = 5.0f;
 
 	[Property, Range( 0.25f, 10.0f ), Step( 0.25f ), Description( "How bright you want the glow to be." ), Feature( "Glow Settings" )]
@@ -65,18 +65,17 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 	private const string MASK_RENDER_TARGET = "MaskRT";
 
-	private const string MASK_RENDER_TARGET_COPY = "MaskRTCopy";
-
 	private const string TMP_RENDER_TARGET = "TmpRT";
 
 	private const string GLOW_COLOR_ATTRIBUTE = "GlowColor";
 
 	private readonly Material maskMaterial = Material.FromShader( "shaders/Mask.shader" );
 	private readonly Material compositeMaterial = Material.FromShader( "shaders/Composite.shader" );
-	private readonly Material copyMaterial = Material.FromShader( "shaders/Copy.shader" );
+	private readonly Material stencilMaterial = Material.FromShader( "shaders/Stencil.shader" );
 	private readonly CommandList commandList = new( "GlowOutline" );
 
 	RendererSetup maskRenderSetup = default;
+	RendererSetup stencilRenderSetup = default;
 	public int Count => objectsToGlow.Count;
 
 	protected override void OnAwake()
@@ -90,6 +89,13 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		maskRenderSetup = new RendererSetup
 		{
 			Material = maskMaterial,
+			Transform = null,
+			Color = null
+		};
+
+		stencilRenderSetup = new RendererSetup
+		{
+			Material = stencilMaterial,
 			Transform = null,
 			Color = null
 		};
@@ -112,48 +118,41 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 
 		commandList.Reset();
 		RenderOutlineEffect();
-		InsertCommandList( commandList, Stage.AfterTransparent, 100, "GlowOutline" );
+		InsertCommandList( commandList, Stage.AfterTransparent, 1000, "GlowOutline" );
 	}
 
 	private void RenderOutlineEffect()
 	{
-		RenderTargetHandle maskRT = CreateMaskRenderTarget( MASK_RENDER_TARGET, 4 );
-
+		RenderTargetHandle blurRT = GetBlurRenderTarget();
 		try
 		{
-			RenderTargetHandle blurRT = BlurMaskRenderTarget( maskRT );
-			try
-			{
-				Composite( blurRT, maskRT );
-			}
-			finally
-			{
-				commandList.ReleaseRenderTarget( blurRT );
-			}
+			DrawGlowModels( false, stencilRenderSetup );
+			Composite( blurRT );
 		}
 		finally
 		{
-			commandList.ReleaseRenderTarget( maskRT );
+			commandList.ReleaseRenderTarget( blurRT );
 		}
 	}
 
-	private void Composite( RenderTargetHandle downScaledRT, RenderTargetHandle maskRT )
+	private void Composite( RenderTargetHandle downScaledRT )
 	{
 		RenderTargetHandle frameRT = commandList.Attributes.GrabFrameTexture( "SceneTexture" );
 
 		commandList.Attributes.Set( "DownScaledTexture", downScaledRT.ColorTexture );
-		commandList.Attributes.Set( "MaskTexture", maskRT.ColorTexture );
 		commandList.Attributes.Set( "GlowIntensity", glowIntensity );
 		commandList.Attributes.Set( "GlowMips", glowMips );
 		commandList.Blit( compositeMaterial );
+
+		commandList.ClearRenderTarget();
 		commandList.ReleaseRenderTarget( frameRT );
 	}
 
-	private RenderTargetHandle BlurMaskRenderTarget( RenderTargetHandle maskRT )
+	private RenderTargetHandle GetBlurRenderTarget()
 	{
 		Graphics.DownsampleMethod downSampleMethod = GetDownSampleMethod();
 
-		RenderTargetHandle blurredRT = CreateMaskRenderTarget( MASK_RENDER_TARGET_COPY, 4 );
+		RenderTargetHandle blurredRT = CreateMaskRenderTarget( MASK_RENDER_TARGET, 4 );
 
 		try
 		{
@@ -201,20 +200,9 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		try
 		{
 			commandList.SetRenderTarget( maskRT );
-			commandList.Clear( Color.Transparent, true, true, true );
-
-			for ( int i = 0; i < objectsToGlow.Count; i++ )
-			{
-				GlowObject glowObject = objectsToGlow[i];
-
-				if ( glowObject.GameObject == null ) continue;
-
-				commandList.Attributes.Set( GLOW_COLOR_ATTRIBUTE, glowObject.Color );
-				glowObject.Renderer ??= glowObject.GameObject.GetComponent<ModelRenderer>();
-				commandList.DrawRenderer( glowObject.Renderer, maskRenderSetup );
-			}
-
-			commandList.SetRenderTarget( null );
+			commandList.Clear( Color.Transparent, true, false, false );
+			DrawGlowModels( true, maskRenderSetup );
+			commandList.ClearRenderTarget();
 		}
 		catch
 		{
@@ -223,6 +211,22 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		}
 
 		return maskRT;
+	}
+
+	private void DrawGlowModels( bool setColor, RendererSetup setup )
+	{
+		for ( int i = 0; i < objectsToGlow.Count; i++ )
+		{
+			GlowObject glowObject = objectsToGlow[i];
+
+			if ( glowObject.GameObject == null ) continue;
+
+			glowObject.Renderer ??= glowObject.GameObject.GetComponent<ModelRenderer>();
+
+			if ( setColor ) commandList.Attributes.Set( GLOW_COLOR_ATTRIBUTE, glowObject.Color );
+
+			commandList.DrawRenderer( glowObject.Renderer, setup );
+		}
 	}
 
 	private void SetTransparentColorToDefault()

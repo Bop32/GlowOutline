@@ -1,6 +1,6 @@
 FEATURES
 {
-    #include "common/features.hlsl"
+#include "common/features.hlsl"
 }
 
 MODES
@@ -11,11 +11,12 @@ MODES
 
 COMMON
 {
-	#include "common/shared.hlsl"
+#include "common/shared.hlsl"
 }
 
 struct VertexInput
 {
+    // clang-format off
     float3 vPositionOs : POSITION < Semantic( PosXyz ); >;
     float2 vTexCoord : TEXCOORD0 < Semantic( LowPrecisionUv ); >;
 };
@@ -46,26 +47,32 @@ VS
 
 PS
 {
+    // clang-format off
     Texture2D colorBuffer < Attribute( "SceneTexture" ); SrgbRead( true ); >;
-    Texture2D _MaskTexture < Attribute("MaskTexture"); SrgbRead(true); >;
     Texture2D _DownScaledTexture < Attribute("DownScaledTexture"); SrgbRead(true); >;
     float _GlowIntensity < Attribute("GlowIntensity"); >;
     int _MipsLevel < Attribute("GlowMips"); >;
-    
+
+    // clang-format on
     RenderState(DepthEnable, false);
+    RenderState(StencilEnable, true);
+
+    RenderState(StencilRef, 1);
+    RenderState(StencilReadMask, 1);
+
+    RenderState(StencilFunc, NOT_EQUAL);
+
+    RenderState(StencilPassOp, KEEP);
+    RenderState(StencilFailOp, KEEP);
+    RenderState(StencilDepthFailOp, KEEP);
+
     float4 MainPs(PixelInput i) : SV_Target0
     {
-        float4 sceneColor = colorBuffer.Sample(g_sBilinearClamp, i.vTexCoord);
-    
-        // Blurred glow (may have spread into visible areas)
+        float4 scene = colorBuffer.Sample(g_sBilinearClamp, i.vTexCoord);
         float4 glow = _DownScaledTexture.Sample(g_sBilinearClamp, i.vTexCoord);
-    
-        // Original mask before blur (sharp edges showing occlusion)
-        float4 mask = _MaskTexture.Sample(g_sBilinearClamp, i.vTexCoord);
-    
-        float3 glowColor = glow.rgb * glow.a * (1 - mask.a) * _GlowIntensity;
-        float3 finalColor = sceneColor.rgb + glowColor;
-    
-        return float4(finalColor, 1.0);
+
+        float3 result = scene.rgb + glow.rgb * _GlowIntensity;
+
+        return float4(result, 1);
     }
 }
