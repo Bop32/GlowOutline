@@ -24,7 +24,7 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 	[Property, Range( 0, 3 ), Step( 1 ), Description( "Changes the resolution of the blur (higher value means lower quality)" ), Feature( "Glow Settings" )]
 	private int glowMips = 2;
 
-	[Property, Range(1.0f, 10.0f ), Step( 0.25f ), Description( "How big you want the glow to be." ), Feature( "Glow Settings" )]
+	[Property, Range( 1.0f, 10.0f ), Step( 0.25f ), Description( "How big you want the glow to be." ), Feature( "Glow Settings" )]
 	private float glowSize = 5.0f;
 
 	[Property, Range( 0.25f, 10.0f ), Step( 0.25f ), Description( "How bright you want the glow to be." ), Feature( "Glow Settings" )]
@@ -126,7 +126,16 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		RenderTargetHandle blurRT = GetBlurRenderTarget();
 		try
 		{
-			DrawGlowModels( false, stencilRenderSetup );
+			for ( int i = 0; i < objectsToGlow.Count; i++ )
+			{
+				GlowObject glowObject = objectsToGlow[i];
+
+				if ( glowObject.GameObject == null ) continue;
+
+				glowObject.Renderer ??= glowObject.GameObject.GetComponent<ModelRenderer>();
+				commandList.DrawRenderer( glowObject.Renderer, stencilRenderSetup );
+			}
+
 			Composite( blurRT );
 		}
 		finally
@@ -201,7 +210,19 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		{
 			commandList.SetRenderTarget( maskRT );
 			commandList.Clear( Color.Transparent, true, false, false );
-			DrawGlowModels( true, maskRenderSetup );
+
+			for ( int i = 0; i < objectsToGlow.Count; i++ )
+			{
+				GlowObject glowObject = objectsToGlow[i];
+
+				if ( glowObject.GameObject == null ) continue;
+
+				glowObject.Renderer ??= glowObject.GameObject.GetComponent<ModelRenderer>();
+
+				commandList.Attributes.Set( GLOW_COLOR_ATTRIBUTE, glowObject.Color );
+				commandList.DrawRenderer( glowObject.Renderer, maskRenderSetup );
+			}
+
 			commandList.ClearRenderTarget();
 		}
 		catch
@@ -211,22 +232,6 @@ public sealed class GlowOutline : BasePostProcess<GlowOutline>
 		}
 
 		return maskRT;
-	}
-
-	private void DrawGlowModels( bool setColor, RendererSetup setup )
-	{
-		for ( int i = 0; i < objectsToGlow.Count; i++ )
-		{
-			GlowObject glowObject = objectsToGlow[i];
-
-			if ( glowObject.GameObject == null ) continue;
-
-			glowObject.Renderer ??= glowObject.GameObject.GetComponent<ModelRenderer>();
-
-			if ( setColor ) commandList.Attributes.Set( GLOW_COLOR_ATTRIBUTE, glowObject.Color );
-
-			commandList.DrawRenderer( glowObject.Renderer, setup );
-		}
 	}
 
 	private void SetTransparentColorToDefault()
